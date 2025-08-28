@@ -447,7 +447,7 @@
         <!-- Header -->
         <div class="header">
             <h1>⚽ ProFútbol</h1>
-            <p>Predicciones deportivas completas con análisis avanzado (usando datos reales via API) 😊</p>
+            <p>Predicciones deportivas completas con análisis avanzado (usando datos reales via API-Football) 😊</p>
         </div>
 
         <!-- Navigation -->
@@ -574,11 +574,12 @@
     </div>
 
     <script>
-        // 🏆 Datos de las ligas (incluye Bundesliga)
+        // 🏆 Datos de las ligas (incluye Bundesliga y IDs de API-Football)
         const leagues = {
             laliga: {
                 name: 'La Liga EA Sports',
                 flag: '🇪🇸',
+                api_id: 140, // ID de La Liga en API-Football
                 teams: [
                     'Real Madrid', 'FC Barcelona', 'Atlético Madrid', 'Athletic Club',
                     'Real Sociedad', 'Real Betis', 'Villarreal CF', 'Valencia CF',
@@ -590,6 +591,7 @@
             premier: {
                 name: 'Premier League',
                 flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
+                api_id: 39, // ID de Premier League en API-Football
                 teams: [
                     'Manchester City', 'Arsenal FC', 'Liverpool FC', 'Chelsea FC',
                     'Manchester United', 'Newcastle United', 'Tottenham Hotspur',
@@ -602,6 +604,7 @@
             bundesliga: {
                 name: 'Bundesliga',
                 flag: '🇩🇪',
+                api_id: 78, // ID de Bundesliga en API-Football
                 teams: [
                     'FC Bayern München', 'Borussia Dortmund', 'RB Leipzig', 'Bayer Leverkusen',
                     'Eintracht Frankfurt', 'VfL Wolfsburg', 'Borussia Mönchengladbach', 'SC Freiburg',
@@ -613,6 +616,7 @@
             fpc: {
                 name: 'Liga BetPlay Colombia',
                 flag: '🇨🇴',
+                api_id: 239, // ID de Liga BetPlay Colombia en API-Football
                 teams: [
                     'Millonarios FC', 'Atlético Nacional', 'América de Cali',
                     'Independiente Santa Fe', 'Deportes Tolima', 'Atlético Bucaramanga',
@@ -635,7 +639,7 @@
             generateUpcomingMatches();
             loadStatistics();
             loadHistory();
-            showToast('¡Bienvenido a ProFútbol! 4 ligas disponibles para predicciones completas con datos reales. 😊', 'success');
+            showToast('¡Bienvenido a ProFútbol! 4 ligas disponibles para predicciones completas con datos reales via API-Football. 😊', 'success');
         });
 
         function setupEventListeners() {
@@ -753,33 +757,44 @@
             }
         }
 
-        // 🧮 Calcular predicción completa (con API real y fallback)
+        // 🧮 Calcular predicción completa (con API-Football real y fallback)
         async function calculateCompletePrediction(homeTeam, awayTeam, league) {
             let homeStrength, awayStrength;
+            const apiKey = '4ecc4e48dbcc799af42a31dfbc7bdc1a'; // Tu clave real de API-Football
+            const leagueId = leagues[league].api_id;
+            const season = new Date().getFullYear(); // Temporada actual (2025 según fecha)
             
             try {
-                // Llamada a API real (Football-Data.org) - Reemplaza 'YOUR_API_KEY'
-                const apiKey = 'YOUR_API_KEY'; // ¡Obtén tu clave gratuita en football-data.org!
-                const homeResponse = await fetch(`https://api.football-data.org/v2/teams?name=${encodeURIComponent(homeTeam)}`, {
-                    headers: { 'X-Auth-Token': apiKey }
+                // Llamada a API-Football para standings (clasificaciones)
+                const response = await fetch(`https://v3.football.api-sports.io/standings?league=${leagueId}&season=${season}`, {
+                    headers: { 'x-apisports-key': apiKey }
                 });
-                const homeData = await homeResponse.json();
                 
-                const awayResponse = await fetch(`https://api.football-data.org/v2/teams?name=${encodeURIComponent(awayTeam)}`, {
-                    headers: { 'X-Auth-Token': apiKey }
-                });
-                const awayData = await awayResponse.json();
+                if (!response.ok) {
+                    throw new Error('Respuesta no OK de API');
+                }
                 
-                if (homeData.teams && homeData.teams.length > 0 && awayData.teams && awayData.teams.length > 0) {
-                    // Usar datos reales: fuerza basada en tamaño de plantilla (ejemplo simple, expande con más endpoints)
-                    homeStrength = homeData.teams[0].squad.length * 2 + 50; // Proxy de fuerza
-                    awayStrength = awayData.teams[0].squad.length * 2 + 40; // Ajuste para visitante
-                    showToast('Usando datos reales de API 📊', 'success');
+                const data = await response.json();
+                
+                if (data.response && data.response.length > 0 && data.response[0].league && data.response[0].league.standings) {
+                    const standings = data.response[0].league.standings[0]; // Primera tabla de standings
+                    
+                    // Encontrar puntos del equipo local y visitante
+                    const homeStanding = standings.find(team => team.team.name.toLowerCase().includes(homeTeam.toLowerCase()));
+                    const awayStanding = standings.find(team => team.team.name.toLowerCase().includes(awayTeam.toLowerCase()));
+                    
+                    if (homeStanding && awayStanding) {
+                        homeStrength = homeStanding.points + 50; // Base en puntos reales + ajuste
+                        awayStrength = awayStanding.points + 40; // Ajuste para visitante
+                        showToast('Usando datos reales de API-Football (standings) 📊', 'success');
+                    } else {
+                        throw new Error('Equipos no encontrados en standings');
+                    }
                 } else {
-                    throw new Error('No se encontraron datos reales');
+                    throw new Error('No hay datos de standings disponibles');
                 }
             } catch (error) {
-                showToast('⚠️ API no disponible, usando simulación aleatoria', 'warning');
+                showToast('⚠️ API-Football no disponible (posiblemente temporada futura), usando simulación aleatoria', 'warning');
                 // Fallback a simulación original
                 homeStrength = Math.random() * 35 + 65; // 65-100
                 awayStrength = Math.random() * 35 + 55; // 55-90
