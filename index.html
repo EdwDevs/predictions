@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚽ Pronósticos Deportivos Pro - Análisis en Tiempo Real</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1><i class="fas fa-futbol"></i> Pronósticos Deportivos Pro</h1>
+                <p>Análisis estadístico avanzado en tiempo real</p>
+            </div>
+            <div class="live-indicator">
+                <span class="pulse"></span>
+                <span>EN VIVO</span>
+            </div>
+        </header>
+
+        <!-- Panel de Control -->
+        <section class="control-panel">
+            <div class="search-section">
+                <input type="text" id="teamSearch" placeholder="Buscar equipos (ej: Real Madrid vs Barcelona)">
+                <button id="analyzeBtn"><i class="fas fa-search"></i> Analizar</button>
+            </div>
+            
+            <div class="filters">
+                <select id="leagueFilter">
+                    <option value="">Todas las Ligas</option>
+                    <option value="laliga">La Liga</option>
+                    <option value="premier">Premier League</option>
+                    <option value="champions">Champions League</option>
+                    <option value="liga-colombiana">Liga Colombiana</option>
+                </select>
+                
+                <select id="timeFilter">
+                    <option value="today">Hoy</option>
+                    <option value="tomorrow">Mañana</option>
+                    <option value="week">Esta Semana</option>
+                </select>
+            </div>
+        </section>
+
+        <!-- Análisis Principal -->
+        <main class="main-content">
+            <!-- Información del Partido -->
+            <div class="match-info" id="matchInfo">
+                <div class="teams">
+                    <div class="team local">
+                        <img src="https://via.placeholder.com/80x80" alt="Equipo Local" id="localTeamLogo">
+                        <h3 id="localTeamName">Equipo Local</h3>
+                        <div class="team-stats">
+                            <div class="stat">
+                                <span class="label">Posición</span>
+                                <span class="value" id="localPosition">-</span>
+                            </div>
+                            <div class="stat">
+                                <span class="label">Puntos</span>
+                                <span class="value" id="localPoints">-</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="vs-section">
+                        <div class="match-time" id="matchTime">15:00</div>
+                        <div class="match-date" id="matchDate">Hoy</div>
+                        <div class="prediction-result" id="predictionResult">
+                            <span class="prediction-text">Analizando...</span>
+                            <div class="confidence-bar">
+                                <div class="confidence-fill" id="confidenceFill"></div>
+                            </div>
+                            <span class="confidence-text" id="confidenceText">0% Confianza</span>
+                        </div>
+                    </div>
+
+                    <div class="team visitante">
+                        <img src="https://via.placeholder.com/80x80" alt="Equipo Visitante" id="visitanteTeamLogo">
+                        <h3 id="visitanteTeamName">Equipo Visitante</h3>
+                        <div class="team-stats">
+                            <div class="stat">
+                                <span class="label">Posición</span>
+                                <span class="value" id="visitantePosition">-</span>
+                            </div>
+                            <div class="stat">
+                                <span class="label">Puntos</span>
+                                <span class="value" id="visitantePoints">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Análisis Detallado -->
+            <div class="analysis-grid">
+                <!-- Poder Ofensivo vs Defensivo -->
+                <div class="analysis-card">
+                    <h3><i class="fas fa-shield-alt"></i> Análisis Ofensivo/Defensivo</h3>
+                    <div class="power-comparison">
+                        <div class="power-bar">
+                            <label>Poder Ofensivo Local</label>
+                            <div class="bar-container">
+                                <div class="bar offensive-local" id="offensiveLocal"></div>
+                                <span class="bar-value" id="offensiveLocalValue">0</span>
+                            </div>
+                        </div>
+                        <div class="power-bar">
+                            <label>Poder Defensivo Visitante</label>
+                            <div class="bar-container">
+                                <div class="bar defensive-visitante" id="defensiveVisitante"></div>
+                                <span class="bar-value" id="defensiveVisitanteValue">0</span>
+                            </div>
+                        </div>
+                        <div class="power-bar">
+                            <label>Poder Ofensivo Visitante</label>
+                            <div class="bar-container">
+                                <div class="bar offensive-visitante" id="offensiveVisitante"></div>
+                                <span class="bar-value" id="offensiveVisitanteValue">0</span>
+                            </div>
+                        </div>
+                        <div class="power-bar">
+                            <label>Poder Defensivo Local</label>
+                            <div class="bar-container">
+                                <div class="bar defensive-local" id="defensiveLocal"></div>
+                                <span class="bar-value" id="defensiveLocalValue">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Posesión de Balón -->
+                <div class="analysis-card">
+                    <h3><i class="fas fa-futbol"></i> Análisis de Posesión</h3>
+                    <div class="possession-stats">
+                        <div class="possession-item">
+                            <span class="team-name">Local (Casa)</span>
+                            <div class="possession-bar">
+                                <div class="possession-fill local-possession" id="localPossession"></div>
+                            </div>
+                            <span class="possession-percentage" id="localPossessionValue">0%</span>
+                        </div>
+                        <div class="possession-item">
+                            <span class="team-name">Visitante (Fuera)</span>
+                            <div class="possession-bar">
+                                <div class="possession-fill visitante-possession" id="visitantePossession"></div>
+                            </div>
+                            <span class="possession-percentage" id="visitantePossessionValue">0%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formaciones -->
+                <div class="analysis-card">
+                    <h3><i class="fas fa-chess"></i> Formaciones Frecuentes</h3>
+                    <div class="formations">
+                        <div class="formation-section">
+                            <h4>Local</h4>
+                            <div class="formation-info" id="localFormation">
+                                <span class="formation-name">4-3-3</span>
+                                <div class="formation-strengths">
+                                    <span class="strength">Ataque rápido</span>
+                                    <span class="strength">Presión alta</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="formation-section">
+                            <h4>Visitante</h4>
+                            <div class="formation-info" id="visitanteFormation">
+                                <span class="formation-name">4-4-2</span>
+                                <div class="formation-strengths">
+                                    <span class="strength">Solidez defensiva</span>
+                                    <span class="strength">Contraataque</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bajas y Lesiones -->
+                <div class="analysis-card">
+                    <h3><i class="fas fa-user-injured"></i> Estado del Plantel</h3>
+                    <div class="team-status">
+                        <div class="status-section">
+                            <h4>Local</h4>
+                            <div class="status-lists">
+                                <div class="status-list">
+                                    <h5>🔴 Lesionados</h5>
+                                    <ul id="localInjured">
+                                        <li>Cargando...</li>
+                                    </ul>
+                                </div>
+                                <div class="status-list">
+                                    <h5>🟡 Dudosos</h5>
+                                    <ul id="localDoubtful">
+                                        <li>Cargando...</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="status-section">
+                            <h4>Visitante</h4>
+                            <div class="status-lists">
+                                <div class="status-list">
+                                    <h5>🔴 Lesionados</h5>
+                                    <ul id="visitanteInjured">
+                                        <li>Cargando...</li>
+                                    </ul>
+                                </div>
+                                <div class="status-list">
+                                    <h5>🟡 Dudosos</h5>
+                                    <ul id="visitanteDoubtful">
+                                        <li>Cargando...</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Últimos 5 Juegos -->
+                <div class="analysis-card">
+                    <h3><i class="fas fa-history"></i> Rendimiento Reciente (Últimos 5)</h3>
+                    <div class="recent-form">
+                        <div class="team-form">
+                            <h4>Local</h4>
+                            <div class="form-results" id="localRecentForm">
+                                <span class="result win">V</span>
+                                <span class="result draw">E</span>
+                                <span class="result win">V</span>
+                                <span class="result loss">D</span>
+                                <span class="result win">V</span>
+                            </div>
+                            <div class="form-stats" id="localFormStats">
+                                <span>3V - 1E - 1D</span>
+                            </div>
+                        </div>
+                        <div class="team-form">
+                            <h4>Visitante</h4>
+                            <div class="form-results" id="visitanteRecentForm">
+                                <span class="result win">V</span>
+                                <span class="result win">V</span>
+                                <span class="result draw">E</span>
+                                <span class="result win">V</span>
+                                <span class="result loss">D</span>
+                            </div>
+                            <div class="form-stats" id="visitanteFormStats">
+                                <span>3V - 1E - 1D</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Análisis del DT -->
+                <div class="analysis-card">
+                    <h3><i class="fas fa-user-tie"></i> Análisis del Director Técnico</h3>
+                    <div class="coach-analysis">
+                        <div class="coach-section">
+                            <h4>DT Local</h4>
+                            <div class="coach-info" id="localCoachInfo">
+                                <div class="coach-name">Carlo Ancelotti</div>
+                                <div class="coach-style">
+                                    <span class="style-tag">Ofensivo</span>
+                                    <span class="style-tag">Pragmático</span>
+                                </div>
+                                <div class="coach-record">15V - 3E - 2D esta temporada</div>
+                            </div>
+                        </div>
+                        <div class="coach-section">
+                            <h4>DT Visitante</h4>
+                            <div class="coach-info" id="visitanteCoachInfo">
+                                <div class="coach-name">Pep Guardiola</div>
+                                <div class="coach-style">
+                                    <span class="style-tag">Posesión</span>
+                                    <span class="style-tag">Presión Alta</span>
+                                </div>
+                                <div class="coach-record">18V - 1E - 1D esta temporada</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resultado del Pronóstico -->
+            <div class="prediction-summary">
+                <h3>📊 Resumen del Pronóstico</h3>
+                <div class="prediction-details" id="predictionDetails">
+                    <div class="prediction-item">
+                        <span class="prediction-label">Resultado más probable:</span>
+                        <span class="prediction-value" id="mostLikelyResult">Victoria Local</span>
+                    </div>
+                    <div class="prediction-item">
+                        <span class="prediction-label">Nivel de confianza:</span>
+                        <span class="prediction-value" id="confidenceLevel">78%</span>
+                    </div>
+                    <div class="prediction-item">
+                        <span class="prediction-label">Factores clave:</span>
+                        <span class="prediction-value" id="keyFactors">Ventaja local, mejor forma reciente</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>© 2025 Pronósticos Deportivos Pro | Datos actualizados cada 30 segundos</p>
+            <div class="last-update">
+                Última actualización: <span id="lastUpdate">--:--:--</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
