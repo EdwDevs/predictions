@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>⚽ Selector de Equipos por Liga</title>
+    <title>⚽ ProFútbol - Predicciones Deportivas</title>
     <style>
         * {
             margin: 0;
@@ -12,229 +12,347 @@
         }
 
         body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #fff;
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #333;
+            line-height: 1.6;
         }
 
         .container {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            max-width: 500px;
-            width: 100%;
-            text-align: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
         }
 
+        /* Header */
         .header {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
             margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
 
         .header h1 {
-            color: #2c3e50;
-            font-size: 2rem;
+            font-size: 2.5rem;
             margin-bottom: 10px;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         .header p {
-            color: #7f8c8d;
             font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Navigation */
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .nav-tab {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .nav-tab:hover, .nav-tab.active {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Content Sections */
+        .content-section {
+            display: none;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Form Elements */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
         }
 
         .form-group {
-            margin-bottom: 25px;
-            text-align: left;
+            display: flex;
+            flex-direction: column;
         }
 
         .form-group label {
-            display: block;
             font-weight: 600;
-            color: #34495e;
             margin-bottom: 8px;
-            font-size: 1.1rem;
+            color: #fff;
         }
 
-        .custom-select {
-            position: relative;
-            width: 100%;
-        }
-
-        select {
-            width: 100%;
-            padding: 15px 20px;
-            border: 2px solid #e1e8ed;
-            border-radius: 12px;
+        select, input {
+            padding: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
             font-size: 1rem;
-            background: white;
-            color: #2c3e50;
+            transition: all 0.3s ease;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        select option {
+            background: #2a5298;
+            color: #fff;
+        }
+
+        /* Buttons */
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 15px center;
-            background-size: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        select:focus {
-            outline: none;
-            border-color: #3498db;
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
-            transform: translateY(-1px);
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
-        select:hover {
-            border-color: #3498db;
-            transform: translateY(-1px);
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
         }
 
-        .teams-section {
-            display: none;
-            animation: fadeInUp 0.5s ease;
+        /* Match Cards */
+        .matches-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
         }
 
-        .teams-section.show {
-            display: block;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .selected-teams {
-            margin-top: 25px;
+        .match-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
             padding: 20px;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border-radius: 12px;
-            border-left: 4px solid #3498db;
-            display: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
         }
 
-        .selected-teams.show {
-            display: block;
-            animation: fadeInUp 0.5s ease;
+        .match-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
         }
 
-        .selected-teams h3 {
-            color: #2c3e50;
-            margin-bottom: 15px;
-            font-size: 1.2rem;
-        }
-
-        .team-info {
+        .match-teams {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 15px;
-            padding: 15px;
-            background: white;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
         }
 
-        .team-flag {
-            font-size: 1.5rem;
-        }
-
-        .team-details {
+        .team {
+            text-align: center;
             flex: 1;
-            text-align: left;
         }
 
         .team-name {
             font-weight: 600;
-            color: #2c3e50;
             font-size: 1.1rem;
+            margin-bottom: 5px;
         }
 
-        .league-name {
-            color: #7f8c8d;
-            font-size: 0.9rem;
+        .vs {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #ffd700;
+            margin: 0 20px;
         }
 
-        .analyze-btn {
-            background: linear-gradient(135deg, #3498db, #2980b9);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
+        .match-info {
+            text-align: center;
             font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Prediction Results */
+        .prediction-result {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 20px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .prediction-header {
+            font-size: 1.3rem;
             font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            margin-bottom: 20px;
         }
 
-        .analyze-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
-        }
-
-        .stats-preview {
+        .prediction-details {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .prediction-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .prediction-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 5px;
+        }
+
+        .prediction-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        /* Statistics */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
             margin-top: 20px;
         }
 
-        .stat-item {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
             text-align: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .stat-value {
-            font-size: 1.5rem;
+            font-size: 2rem;
             font-weight: 700;
-            color: #3498db;
+            color: #ffd700;
             display: block;
         }
 
         .stat-label {
-            font-size: 0.8rem;
-            color: #7f8c8d;
+            font-size: 0.9rem;
+            opacity: 0.8;
             margin-top: 5px;
         }
 
+        /* Progress Bars */
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            height: 8px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 10px;
+            transition: width 1s ease;
+        }
+
+        /* History Table */
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .history-table th,
+        .history-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .history-table th {
+            background: rgba(255, 255, 255, 0.1);
+            font-weight: 600;
+        }
+
+        .correct { color: #4CAF50; }
+        .incorrect { color: #f44336; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 2rem; }
+            .form-grid { grid-template-columns: 1fr; }
+            .nav-tabs { flex-direction: column; align-items: center; }
+            .matches-grid { grid-template-columns: 1fr; }
+            .prediction-details { grid-template-columns: 1fr; }
+        }
+
+        /* Loading Animation */
         .loading {
             display: inline-block;
             width: 20px;
             height: 20px;
-            border: 2px solid #f3f3f3;
-            border-top: 2px solid #3498db;
+            border: 2px solid rgba(255, 255, 255, 0.3);
             border-radius: 50%;
+            border-top-color: #fff;
             animation: spin 1s linear infinite;
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            to { transform: rotate(360deg); }
         }
 
+        /* Toast Notifications */
         .toast {
             position: fixed;
             top: 20px;
             right: 20px;
-            background: #2ecc71;
+            background: #4CAF50;
             color: white;
             padding: 15px 25px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             transform: translateX(100%);
             transition: transform 0.3s ease;
             z-index: 1000;
@@ -244,362 +362,687 @@
             transform: translateX(0);
         }
 
-        .toast.error {
-            background: #e74c3c;
-        }
-
-        .toast.warning {
-            background: #f39c12;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .container {
-                margin: 20px;
-                padding: 30px 20px;
-            }
-
-            .header h1 {
-                font-size: 1.6rem;
-            }
-
-            .stats-preview {
-                grid-template-columns: 1fr;
-            }
-
-            .team-info {
-                flex-direction: column;
-                text-align: center;
-            }
-        }
+        .toast.error { background: #f44336; }
+        .toast.warning { background: #ff9800; }
     </style>
 </head>
 <body>
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <h1>⚽ Selector de Equipos</h1>
-            <p>Selecciona una liga para ver los equipos disponibles</p>
+            <h1>⚽ ProFútbol</h1>
+            <p>Predicciones deportivas inteligentes basadas en análisis estadístico</p>
         </div>
 
-        <!-- Selector de Liga -->
-        <div class="form-group">
-            <label for="leagueSelect">🏆 Seleccionar Liga:</label>
-            <div class="custom-select">
-                <select id="leagueSelect">
-                    <option value="">-- Selecciona una Liga --</option>
-                    <option value="laliga">🇪🇸 La Liga EA Sports</option>
+        <!-- Navigation -->
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showSection('predictor')">🔮 Predictor</button>
+            <button class="nav-tab" onclick="showSection('matches')">⚽ Partidos</button>
+            <button class="nav-tab" onclick="showSection('stats')">📊 Estadísticas</button>
+            <button class="nav-tab" onclick="showSection('history')">📋 Historial</button>
+        </div>
+
+        <!-- Predictor Section -->
+        <div id="predictor" class="content-section active">
+            <h2>🔮 Generador de Predicciones</h2>
+            
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="leagueSelect">🏆 Liga:</label>
+                    <select id="leagueSelect">
+                        <option value="">Selecciona una liga</option>
+                        <option value="laliga">🇪🇸 La Liga EA Sports</option>
+                        <option value="premier">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League</option>
+                        <option value="fpc">🇨🇴 Liga BetPlay Colombia</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="homeTeam">🏠 Equipo Local:</label>
+                    <select id="homeTeam" disabled>
+                        <option value="">Selecciona liga primero</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="awayTeam">✈️ Equipo Visitante:</label>
+                    <select id="awayTeam" disabled>
+                        <option value="">Selecciona liga primero</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="matchDate">📅 Fecha del Partido:</label>
+                    <input type="date" id="matchDate" min="">
+                </div>
+            </div>
+
+            <button class="btn" id="predictBtn" onclick="generatePrediction()" disabled>
+                🎯 Generar Predicción
+            </button>
+
+            <div id="predictionResult" style="display: none;"></div>
+        </div>
+
+        <!-- Matches Section -->
+        <div id="matches" class="content-section">
+            <h2>⚽ Partidos Próximos</h2>
+            <p>Selecciona un partido para generar predicción automática</p>
+            
+            <div class="form-group" style="max-width: 300px;">
+                <label for="matchLeague">Filtrar por liga:</label>
+                <select id="matchLeague" onchange="filterMatches()">
+                    <option value="">Todas las ligas</option>
+                    <option value="laliga">🇪🇸 La Liga</option>
                     <option value="premier">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League</option>
-                    <option value="fpc">🇨🇴 Liga BetPlay Colombia</option>
+                    <option value="fpc">🇨🇴 Liga BetPlay</option>
                 </select>
             </div>
+
+            <div id="matchesContainer" class="matches-grid"></div>
         </div>
 
-        <!-- Selector de Equipos -->
-        <div class="form-group teams-section" id="teamsSection">
-            <label for="teamSelect">⚽ Seleccionar Equipo:</label>
-            <div class="custom-select">
-                <select id="teamSelect">
-                    <option value="">-- Primero selecciona una liga --</option>
-                </select>
+        <!-- Statistics Section -->
+        <div id="stats" class="content-section">
+            <h2>📊 Estadísticas de Ligas</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-value" id="totalPredictions">0</span>
+                    <div class="stat-label">Predicciones Realizadas</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value" id="accuracyRate">0%</span>
+                    <div class="stat-label">Tasa de Acierto</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value" id="bestLeague">-</span>
+                    <div class="stat-label">Liga con Mejor Rendimiento</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value" id="totalMatches">0</span>
+                    <div class="stat-label">Partidos Analizados</div>
+                </div>
             </div>
+
+            <h3>📈 Rendimiento por Liga</h3>
+            <div id="leagueStats"></div>
         </div>
 
-        <!-- Información de Equipos Seleccionados -->
-        <div class="selected-teams" id="selectedTeams">
-            <h3>📊 Equipo Seleccionado</h3>
-            <div id="teamInfo"></div>
-            <div class="stats-preview" id="statsPreview">
-                <div class="stat-item">
-                    <span class="stat-value" id="attackStat">85</span>
-                    <span class="stat-label">Ataque</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-value" id="defenseStat">78</span>
-                    <span class="stat-label">Defensa</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-value" id="formStat">92</span>
-                    <span class="stat-label">Forma</span>
-                </div>
+        <!-- History Section -->
+        <div id="history" class="content-section">
+            <h2>📋 Historial de Predicciones</h2>
+            
+            <div class="form-group" style="max-width: 200px;">
+                <button class="btn" onclick="clearHistory()">🗑️ Limpiar Historial</button>
             </div>
+
+            <table class="history-table" id="historyTable">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Partido</th>
+                        <th>Predicción</th>
+                        <th>Confianza</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody id="historyBody">
+                </tbody>
+            </table>
         </div>
     </div>
 
     <script>
-        // 🏆 Datos de las ligas y equipos
+        // 🏆 Datos de las ligas
         const leagues = {
             laliga: {
                 name: 'La Liga EA Sports',
                 flag: '🇪🇸',
-                country: 'España',
                 teams: [
-                    { name: 'Real Madrid', city: 'Madrid', founded: 1902 },
-                    { name: 'FC Barcelona', city: 'Barcelona', founded: 1899 },
-                    { name: 'Atlético de Madrid', city: 'Madrid', founded: 1903 },
-                    { name: 'Athletic Club', city: 'Bilbao', founded: 1898 },
-                    { name: 'Real Sociedad', city: 'San Sebastián', founded: 1909 },
-                    { name: 'Real Betis', city: 'Sevilla', founded: 1907 },
-                    { name: 'Villarreal CF', city: 'Villarreal', founded: 1923 },
-                    { name: 'Valencia CF', city: 'Valencia', founded: 1919 },
-                    { name: 'Sevilla FC', city: 'Sevilla', founded: 1890 },
-                    { name: 'Celta de Vigo', city: 'Vigo', founded: 1923 },
-                    { name: 'Rayo Vallecano', city: 'Madrid', founded: 1924 },
-                    { name: 'CA Osasuna', city: 'Pamplona', founded: 1920 },
-                    { name: 'RCD Mallorca', city: 'Palma', founded: 1916 },
-                    { name: 'Getafe CF', city: 'Getafe', founded: 1946 },
-                    { name: 'Deportivo Alavés', city: 'Vitoria', founded: 1921 },
-                    { name: 'RCD Espanyol', city: 'Barcelona', founded: 1900 },
-                    { name: 'Girona FC', city: 'Girona', founded: 1930 },
-                    { name: 'UD Las Palmas', city: 'Las Palmas', founded: 1949 },
-                    { name: 'RC Celta', city: 'Vigo', founded: 1923 },
-                    { name: 'Cádiz CF', city: 'Cádiz', founded: 1910 }
+                    'Real Madrid', 'FC Barcelona', 'Atlético Madrid', 'Athletic Club',
+                    'Real Sociedad', 'Real Betis', 'Villarreal CF', 'Valencia CF',
+                    'Sevilla FC', 'Celta de Vigo', 'Rayo Vallecano', 'CA Osasuna',
+                    'RCD Mallorca', 'Getafe CF', 'Deportivo Alavés', 'RCD Espanyol',
+                    'Girona FC', 'UD Las Palmas', 'RC Celta', 'Cádiz CF'
                 ]
             },
             premier: {
                 name: 'Premier League',
                 flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
-                country: 'Inglaterra',
                 teams: [
-                    { name: 'Manchester City', city: 'Manchester', founded: 1880 },
-                    { name: 'Arsenal FC', city: 'Londres', founded: 1886 },
-                    { name: 'Liverpool FC', city: 'Liverpool', founded: 1892 },
-                    { name: 'Chelsea FC', city: 'Londres', founded: 1905 },
-                    { name: 'Manchester United', city: 'Manchester', founded: 1878 },
-                    { name: 'Newcastle United', city: 'Newcastle', founded: 1892 },
-                    { name: 'Tottenham Hotspur', city: 'Londres', founded: 1882 },
-                    { name: 'Brighton & Hove Albion', city: 'Brighton', founded: 1901 },
-                    { name: 'Aston Villa', city: 'Birmingham', founded: 1874 },
-                    { name: 'West Ham United', city: 'Londres', founded: 1895 },
-                    { name: 'Crystal Palace', city: 'Londres', founded: 1905 },
-                    { name: 'Fulham FC', city: 'Londres', founded: 1879 },
-                    { name: 'Wolverhampton Wanderers', city: 'Wolverhampton', founded: 1877 },
-                    { name: 'Everton FC', city: 'Liverpool', founded: 1878 },
-                    { name: 'Brentford FC', city: 'Londres', founded: 1889 },
-                    { name: 'Nottingham Forest', city: 'Nottingham', founded: 1865 },
-                    { name: 'Luton Town', city: 'Luton', founded: 1885 },
-                    { name: 'AFC Bournemouth', city: 'Bournemouth', founded: 1899 },
-                    { name: 'Sheffield United', city: 'Sheffield', founded: 1889 },
-                    { name: 'Burnley FC', city: 'Burnley', founded: 1882 }
+                    'Manchester City', 'Arsenal FC', 'Liverpool FC', 'Chelsea FC',
+                    'Manchester United', 'Newcastle United', 'Tottenham Hotspur',
+                    'Brighton & Hove Albion', 'Aston Villa', 'West Ham United',
+                    'Crystal Palace', 'Fulham FC', 'Wolverhampton Wanderers',
+                    'Everton FC', 'Brentford FC', 'Nottingham Forest', 'Luton Town',
+                    'AFC Bournemouth', 'Sheffield United', 'Burnley FC'
                 ]
             },
             fpc: {
                 name: 'Liga BetPlay Colombia',
                 flag: '🇨🇴',
-                country: 'Colombia',
                 teams: [
-                    { name: 'Millonarios FC', city: 'Bogotá', founded: 1946 },
-                    { name: 'Atlético Nacional', city: 'Medellín', founded: 1947 },
-                    { name: 'América de Cali', city: 'Cali', founded: 1927 },
-                    { name: 'Independiente Santa Fe', city: 'Bogotá', founded: 1941 },
-                    { name: 'Deportes Tolima', city: 'Ibagué', founded: 1954 },
-                    { name: 'Atlético Bucaramanga', city: 'Bucaramanga', founded: 1949 },
-                    { name: 'Junior FC', city: 'Barranquilla', founded: 1924 },
-                    { name: 'Independiente Medellín', city: 'Medellín', founded: 1913 },
-                    { name: 'Once Caldas', city: 'Manizales', founded: 1947 },
-                    { name: 'La Equidad', city: 'Bogotá', founded: 1990 },
-                    { name: 'Boyacá Chicó', city: 'Tunja', founded: 2002 },
-                    { name: 'Envigado FC', city: 'Envigado', founded: 1989 },
-                    { name: 'Patriotas Boyacá', city: 'Tunja', founded: 2003 },
-                    { name: 'Unión Magdalena', city: 'Santa Marta', founded: 1950 },
-                    { name: 'Águilas Doradas', city: 'Rionegro', founded: 2008 },
-                    { name: 'Alianza FC', city: 'Valledupar', founded: 2005 },
-                    { name: 'Deportivo Cali', city: 'Cali', founded: 1912 },
-                    { name: 'Fortaleza FC', city: 'Bogotá', founded: 2009 },
-                    { name: 'Jaguares de Córdoba', city: 'Montería', founded: 1989 },
-                    { name: 'Deportivo Pereira', city: 'Pereira', founded: 1944 }
+                    'Millonarios FC', 'Atlético Nacional', 'América de Cali',
+                    'Independiente Santa Fe', 'Deportes Tolima', 'Atlético Bucaramanga',
+                    'Junior FC', 'Independiente Medellín', 'Once Caldas', 'La Equidad',
+                    'Boyacá Chicó', 'Envigado FC', 'Patriotas Boyacá', 'Unión Magdalena',
+                    'Águilas Doradas', 'Alianza FC', 'Deportivo Cali', 'Fortaleza FC',
+                    'Jaguares de Córdoba', 'Deportivo Pereira'
                 ]
             }
         };
 
-        // 🔧 Referencias a elementos DOM
-        const leagueSelect = document.getElementById('leagueSelect');
-        const teamSelect = document.getElementById('teamSelect');
-        const teamsSection = document.getElementById('teamsSection');
-        const selectedTeams = document.getElementById('selectedTeams');
-        const teamInfo = document.getElementById('teamInfo');
-        const statsPreview = document.getElementById('statsPreview');
+        // 📊 Variables globales
+        let predictionHistory = JSON.parse(localStorage.getItem('predictionHistory') || '[]');
+        let upcomingMatches = [];
 
-        // 📡 Event Listeners
-        leagueSelect.addEventListener('change', handleLeagueChange);
-        teamSelect.addEventListener('change', handleTeamChange);
+        // 🔧 Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            setupEventListeners();
+            generateUpcomingMatches();
+            loadStatistics();
+            loadHistory();
+            setMinDate();
+            showToast('¡Bienvenido a ProFútbol! Selecciona una liga para comenzar.', 'success');
+        });
+
+        function setupEventListeners() {
+            document.getElementById('leagueSelect').addEventListener('change', handleLeagueChange);
+            document.getElementById('homeTeam').addEventListener('change', checkPredictionReady);
+            document.getElementById('awayTeam').addEventListener('change', checkPredictionReady);
+            document.getElementById('matchDate').addEventListener('change', checkPredictionReady);
+        }
+
+        function setMinDate() {
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(today.getDate() + 1);
+            document.getElementById('matchDate').min = tomorrow.toISOString().split('T')[0];
+        }
 
         // 🏆 Manejar cambio de liga
         function handleLeagueChange() {
-            const selectedLeague = leagueSelect.value;
-            
-            console.log('🏆 Liga seleccionada:', selectedLeague);
-            
-            if (selectedLeague) {
-                showTeamsForLeague(selectedLeague);
+            const selectedLeague = document.getElementById('leagueSelect').value;
+            const homeTeamSelect = document.getElementById('homeTeam');
+            const awayTeamSelect = document.getElementById('awayTeam');
+
+            if (selectedLeague && leagues[selectedLeague]) {
+                const teams = leagues[selectedLeague].teams;
+                
+                // Poblar equipos locales
+                homeTeamSelect.innerHTML = '<option value="">Selecciona equipo local</option>';
+                awayTeamSelect.innerHTML = '<option value="">Selecciona equipo visitante</option>';
+                
+                teams.forEach(team => {
+                    homeTeamSelect.innerHTML += `<option value="${team}">${team}</option>`;
+                    awayTeamSelect.innerHTML += `<option value="${team}">${team}</option>`;
+                });
+
+                homeTeamSelect.disabled = false;
+                awayTeamSelect.disabled = false;
+                
                 showToast(`Liga ${leagues[selectedLeague].name} seleccionada`, 'success');
             } else {
-                hideTeamsSection();
+                homeTeamSelect.innerHTML = '<option value="">Selecciona liga primero</option>';
+                awayTeamSelect.innerHTML = '<option value="">Selecciona liga primero</option>';
+                homeTeamSelect.disabled = true;
+                awayTeamSelect.disabled = true;
+            }
+            
+            checkPredictionReady();
+        }
+
+        // ✅ Verificar si está listo para predecir
+        function checkPredictionReady() {
+            const league = document.getElementById('leagueSelect').value;
+            const homeTeam = document.getElementById('homeTeam').value;
+            const awayTeam = document.getElementById('awayTeam').value;
+            const matchDate = document.getElementById('matchDate').value;
+            
+            const isReady = league && homeTeam && awayTeam && matchDate && homeTeam !== awayTeam;
+            document.getElementById('predictBtn').disabled = !isReady;
+            
+            if (homeTeam && awayTeam && homeTeam === awayTeam) {
+                showToast('Un equipo no puede jugar contra sí mismo', 'error');
             }
         }
 
-        // ⚽ Mostrar equipos de la liga seleccionada
-        function showTeamsForLeague(leagueKey) {
-            const league = leagues[leagueKey];
-            
-            if (!league) {
-                console.error('❌ Liga no encontrada:', leagueKey);
+        // 🎯 Generar predicción
+        function generatePrediction() {
+            const league = document.getElementById('leagueSelect').value;
+            const homeTeam = document.getElementById('homeTeam').value;
+            const awayTeam = document.getElementById('awayTeam').value;
+            const matchDate = document.getElementById('matchDate').value;
+
+            if (!league || !homeTeam || !awayTeam || !matchDate) {
+                showToast('Por favor completa todos los campos', 'error');
                 return;
             }
 
-            // Limpiar selector de equipos
-            teamSelect.innerHTML = '<option value="">-- Selecciona un equipo --</option>';
-            
-            // Agregar equipos de la liga
-            league.teams.forEach((team, index) => {
-                const option = document.createElement('option');
-                option.value = `${leagueKey}-${index}`;
-                option.textContent = `${league.flag} ${team.name}`;
-                teamSelect.appendChild(option);
-            });
-
-            // Mostrar sección de equipos
-            teamsSection.classList.add('show');
-            
-            // Ocultar información de equipo seleccionado
-            selectedTeams.classList.remove('show');
-            
-            console.log(`✅ Mostrando ${league.teams.length} equipos de ${league.name}`);
-        }
-
-        // 🙈 Ocultar sección de equipos
-        function hideTeamsSection() {
-            teamsSection.classList.remove('show');
-            selectedTeams.classList.remove('show');
-            teamSelect.innerHTML = '<option value="">-- Primero selecciona una liga --</option>';
-        }
-
-        // ⚽ Manejar cambio de equipo
-        function handleTeamChange() {
-            const selectedValue = teamSelect.value;
-            
-            if (!selectedValue) {
-                selectedTeams.classList.remove('show');
+            if (homeTeam === awayTeam) {
+                showToast('Selecciona equipos diferentes', 'error');
                 return;
             }
 
-            const [leagueKey, teamIndex] = selectedValue.split('-');
-            const league = leagues[leagueKey];
-            const team = league.teams[parseInt(teamIndex)];
-            
-            console.log('⚽ Equipo seleccionado:', team.name);
-            
-            showTeamInfo(team, league);
-            showToast(`Equipo ${team.name} seleccionado`, 'success');
-        }
+            // Mostrar loading
+            document.getElementById('predictBtn').innerHTML = '<span class="loading"></span> Analizando...';
+            document.getElementById('predictBtn').disabled = true;
 
-        // 📊 Mostrar información del equipo
-        function showTeamInfo(team, league) {
-            // Información básica del equipo
-            teamInfo.innerHTML = `
-                <div class="team-info">
-                    <div class="team-flag">${league.flag}</div>
-                    <div class="team-details">
-                        <div class="team-name">${team.name}</div>
-                        <div class="league-name">${league.name} • ${team.city} • Fundado en ${team.founded}</div>
-                    </div>
-                    <button class="analyze-btn" onclick="analyzeTeam('${team.name}')">
-                        📊 Analizar
-                    </button>
-                </div>
-            `;
-
-            // Generar estadísticas simuladas
-            updateTeamStats();
-            
-            // Mostrar sección
-            selectedTeams.classList.add('show');
-        }
-
-        // 📈 Actualizar estadísticas del equipo
-        function updateTeamStats() {
-            // Generar estadísticas aleatorias realistas
-            const attackStat = Math.floor(Math.random() * 30) + 70; // 70-100
-            const defenseStat = Math.floor(Math.random() * 30) + 65; // 65-95
-            const formStat = Math.floor(Math.random() * 40) + 60;   // 60-100
-
-            // Animar cambio de estadísticas
-            animateStatChange('attackStat', attackStat);
-            animateStatChange('defenseStat', defenseStat);
-            animateStatChange('formStat', formStat);
-        }
-
-        // ✨ Animar cambio de estadística
-        function animateStatChange(elementId, newValue) {
-            const element = document.getElementById(elementId);
-            let currentValue = parseInt(element.textContent) || 0;
-            const increment = newValue > currentValue ? 1 : -1;
-            
-            const timer = setInterval(() => {
-                if (currentValue === newValue) {
-                    clearInterval(timer);
-                } else {
-                    currentValue += increment;
-                    element.textContent = currentValue;
-                }
-            }, 20);
-        }
-
-        // 🔍 Analizar equipo (función de ejemplo)
-        function analyzeTeam(teamName) {
-            showToast(`🤖 Analizando ${teamName}...`, 'info');
-            
             setTimeout(() => {
-                showToast(`✅ Análisis de ${teamName} completado`, 'success');
-                updateTeamStats(); // Actualizar estadísticas
+                const prediction = calculatePrediction(homeTeam, awayTeam, league);
+                displayPrediction(prediction, homeTeam, awayTeam, matchDate, league);
+                
+                // Guardar en historial
+                savePrediction(homeTeam, awayTeam, matchDate, prediction, league);
+                
+                // Restaurar botón
+                document.getElementById('predictBtn').innerHTML = '🎯 Generar Predicción';
+                document.getElementById('predictBtn').disabled = false;
+                
+                showToast('¡Predicción generada exitosamente!', 'success');
             }, 2000);
         }
 
-        // 🎉 Mostrar notificación toast
-        function showToast(message, type = 'success') {
-            // Remover toast anterior si existe
-            const existingToast = document.querySelector('.toast');
-            if (existingToast) {
-                existingToast.remove();
+        // 🧮 Calcular predicción
+        function calculatePrediction(homeTeam, awayTeam, league) {
+            // Simulación de análisis estadístico complejo
+            const homeStrength = Math.random() * 40 + 60; // 60-100
+            const awayStrength = Math.random() * 40 + 50; // 50-90
+            const homeAdvantage = 15; // Ventaja de jugar en casa
+            
+            const homeTotalStrength = homeStrength + homeAdvantage;
+            const awayTotalStrength = awayStrength;
+            
+            // Calcular probabilidades
+            const total = homeTotalStrength + awayTotalStrength;
+            const homeWinProb = Math.round((homeTotalStrength / total) * 100);
+            const awayWinProb = Math.round((awayTotalStrength / total) * 100);
+            const drawProb = Math.max(100 - homeWinProb - awayWinProb, 15);
+            
+            // Ajustar para que sumen 100%
+            const totalProb = homeWinProb + awayWinProb + drawProb;
+            const adjustedHomeWin = Math.round((homeWinProb / totalProb) * 100);
+            const adjustedAwayWin = Math.round((awayWinProb / totalProb) * 100);
+            const adjustedDraw = 100 - adjustedHomeWin - adjustedAwayWin;
+
+            // Determinar resultado más probable
+            let predictedResult = 'Empate';
+            let confidence = adjustedDraw;
+            
+            if (adjustedHomeWin > adjustedAwayWin && adjustedHomeWin > adjustedDraw) {
+                predictedResult = 'Victoria Local';
+                confidence = adjustedHomeWin;
+            } else if (adjustedAwayWin > adjustedHomeWin && adjustedAwayWin > adjustedDraw) {
+                predictedResult = 'Victoria Visitante';
+                confidence = adjustedAwayWin;
             }
 
-            // Crear nuevo toast
+            return {
+                result: predictedResult,
+                confidence: confidence,
+                homeWinProb: adjustedHomeWin,
+                awayWinProb: adjustedAwayWin,
+                drawProb: adjustedDraw,
+                homeStrength: Math.round(homeStrength),
+                awayStrength: Math.round(awayStrength),
+                keyFactors: generateKeyFactors(homeTeam, awayTeam, league)
+            };
+        }
+
+        // 🔑 Generar factores clave
+        function generateKeyFactors(homeTeam, awayTeam, league) {
+            const factors = [
+                'Ventaja de jugar en casa',
+                'Forma reciente del equipo',
+                'Historial de enfrentamientos',
+                'Disponibilidad de jugadores clave',
+                'Motivación del equipo',
+                'Condiciones climáticas',
+                'Presión de la afición'
+            ];
+            
+            return factors.sort(() => 0.5 - Math.random()).slice(0, 3);
+        }
+
+        // 📊 Mostrar predicción
+        function displayPrediction(prediction, homeTeam, awayTeam, matchDate, league) {
+            const resultDiv = document.getElementById('predictionResult');
+            const leagueData = leagues[league];
+            
+            resultDiv.innerHTML = `
+                <div class="prediction-result">
+                    <div class="prediction-header">
+                        ${leagueData.flag} ${homeTeam} vs ${awayTeam}
+                    </div>
+                    
+                    <div class="prediction-details">
+                        <div class="prediction-item">
+                            <div class="prediction-label">Resultado Más Probable</div>
+                            <div class="prediction-value">${prediction.result}</div>
+                        </div>
+                        <div class="prediction-item">
+                            <div class="prediction-label">Nivel de Confianza</div>
+                            <div class="prediction-value">${prediction.confidence}%</div>
+                        </div>
+                        <div class="prediction-item">
+                            <div class="prediction-label">Victoria Local</div>
+                            <div class="prediction-value">${prediction.homeWinProb}%</div>
+                        </div>
+                        <div class="prediction-item">
+                            <div class="prediction-label">Empate</div>
+                            <div class="prediction-value">${prediction.drawProb}%</div>
+                        </div>
+                        <div class="prediction-item">
+                            <div class="prediction-label">Victoria Visitante</div>
+                            <div class="prediction-value">${prediction.awayWinProb}%</div>
+                        </div>
+                    </div>
+
+                    <h4>📈 Análisis de Equipos</h4>
+                    <div style="margin: 15px 0;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <span>${homeTeam} (Local)</span>
+                            <span>${prediction.homeStrength}/100</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${prediction.homeStrength}%"></div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin: 15px 0;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <span>${awayTeam} (Visitante)</span>
+                            <span>${prediction.awayStrength}/100</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${prediction.awayStrength}%"></div>
+                        </div>
+                    </div>
+
+                    <h4>🔑 Factores Clave</h4>
+                    <ul style="text-align: left; margin: 10px 0; padding-left: 20px;">
+                        ${prediction.keyFactors.map(factor => `<li>${factor}</li>`).join('')}
+                    </ul>
+
+                    <div style="margin-top: 20px; font-size: 0.9rem; opacity: 0.8;">
+                        <strong>Fecha del partido:</strong> ${new Date(matchDate).toLocaleDateString('es-ES', {
+                            weekday: 'long',
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        })}
+                    </div>
+                </div>
+            `;
+            
+            resultDiv.style.display = 'block';
+        }
+
+        // 💾 Guardar predicción
+        function savePrediction(homeTeam, awayTeam, matchDate, prediction, league) {
+            const predictionData = {
+                id: Date.now(),
+                date: new Date().toISOString(),
+                matchDate: matchDate,
+                homeTeam: homeTeam,
+                awayTeam: awayTeam,
+                league: league,
+                prediction: prediction.result,
+                confidence: prediction.confidence,
+                status: 'Pendiente'
+            };
+            
+            predictionHistory.unshift(predictionData);
+            localStorage.setItem('predictionHistory', JSON.stringify(predictionHistory));
+            loadHistory();
+            loadStatistics();
+        }
+
+        // 📊 Generar partidos próximos
+        function generateUpcomingMatches() {
+            upcomingMatches = [];
+            const today = new Date();
+            
+            Object.keys(leagues).forEach(leagueKey => {
+                const leagueTeams = leagues[leagueKey].teams;
+                
+                // Generar 5 partidos aleatorios por liga
+                for (let i = 0; i < 5; i++) {
+                    const homeTeam = leagueTeams[Math.floor(Math.random() * leagueTeams.length)];
+                    let awayTeam;
+                    do {
+                        awayTeam = leagueTeams[Math.floor(Math.random() * leagueTeams.length)];
+                    } while (awayTeam === homeTeam);
+                    
+                    const matchDate = new Date(today);
+                    matchDate.setDate(today.getDate() + Math.floor(Math.random() * 14) + 1);
+                    
+                    upcomingMatches.push({
+                        id: Date.now() + i + Math.random(),
+                        league: leagueKey,
+                        homeTeam: homeTeam,
+                        awayTeam: awayTeam,
+                        date: matchDate,
+                        time: `${Math.floor(Math.random() * 12) + 12}:${Math.random() > 0.5 ? '00' : '30'}`
+                    });
+                }
+            });
+            
+            upcomingMatches.sort((a, b) => a.date - b.date);
+            displayMatches();
+        }
+
+        // 📋 Mostrar partidos
+        function displayMatches(filteredMatches = upcomingMatches) {
+            const container = document.getElementById('matchesContainer');
+            
+            if (filteredMatches.length === 0) {
+                container.innerHTML = '<p style="text-align: center; opacity: 0.7;">No hay partidos disponibles</p>';
+                return;
+            }
+            
+            container.innerHTML = filteredMatches.map(match => `
+                <div class="match-card" onclick="selectMatch('${match.id}')">
+                    <div class="match-teams">
+                        <div class="team">
+                            <div class="team-name">${match.homeTeam}</div>
+                            <div style="font-size: 0.8rem; opacity: 0.7;">Local</div>
+                        </div>
+                        <div class="vs">VS</div>
+                        <div class="team">
+                            <div class="team-name">${match.awayTeam}</div>
+                            <div style="font-size: 0.8rem; opacity: 0.7;">Visitante</div>
+                        </div>
+                    </div>
+                    <div class="match-info">
+                        ${leagues[match.league].flag} ${leagues[match.league].name}<br>
+                        ${match.date.toLocaleDateString('es-ES')} - ${match.time}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // 🎯 Seleccionar partido
+        function selectMatch(matchId) {
+            const match = upcomingMatches.find(m => m.id == matchId);
+            if (!match) return;
+            
+            // Cambiar a la sección de predictor
+            showSection('predictor');
+            
+            // Llenar formulario
+            document.getElementById('leagueSelect').value = match.league;
+            handleLeagueChange();
+            
+            setTimeout(() => {
+                document.getElementById('homeTeam').value = match.homeTeam;
+                document.getElementById('awayTeam').value = match.awayTeam;
+                document.getElementById('matchDate').value = match.date.toISOString().split('T')[0];
+                checkPredictionReady();
+            }, 100);
+            
+            showToast(`Partido ${match.homeTeam} vs ${match.awayTeam} seleccionado`, 'success');
+        }
+
+        // 🔍 Filtrar partidos
+        function filterMatches() {
+            const selectedLeague = document.getElementById('matchLeague').value;
+            
+            if (selectedLeague) {
+                const filtered = upcomingMatches.filter(match => match.league === selectedLeague);
+                displayMatches(filtered);
+            } else {
+                displayMatches();
+            }
+        }
+
+        // 📊 Cargar estadísticas
+        function loadStatistics() {
+            const totalPredictions = predictionHistory.length;
+            const correctPredictions = predictionHistory.filter(p => p.status === 'Correcto').length;
+            const accuracyRate = totalPredictions > 0 ? Math.round((correctPredictions / totalPredictions) * 100) : 0;
+            
+            document.getElementById('totalPredictions').textContent = totalPredictions;
+            document.getElementById('accuracyRate').textContent = accuracyRate + '%';
+            document.getElementById('totalMatches').textContent = upcomingMatches.length;
+            
+            // Mejor liga
+            const leagueStats = {};
+            predictionHistory.forEach(pred => {
+                if (!leagueStats[pred.league]) {
+                    leagueStats[pred.league] = { total: 0, correct: 0 };
+                }
+                leagueStats[pred.league].total++;
+                if (pred.status === 'Correcto') {
+                    leagueStats[pred.league].correct++;
+                }
+            });
+            
+            let bestLeague = '-';
+            let bestAccuracy = 0;
+            
+            Object.keys(leagueStats).forEach(league => {
+                const accuracy = leagueStats[league].total > 0 ? 
+                    (leagueStats[league].correct / leagueStats[league].total) * 100 : 0;
+                if (accuracy > bestAccuracy) {
+                    bestAccuracy = accuracy;
+                    bestLeague = leagues[league]?.name || league;
+                }
+            });
+            
+            document.getElementById('bestLeague').textContent = bestLeague;
+            
+            // Mostrar estadísticas por liga
+            displayLeagueStats(leagueStats);
+        }
+
+        // 📈 Mostrar estadísticas por liga
+        function displayLeagueStats(leagueStats) {
+            const container = document.getElementById('leagueStats');
+            
+            container.innerHTML = Object.keys(leagues).map(leagueKey => {
+                const stats = leagueStats[leagueKey] || { total: 0, correct: 0 };
+                const accuracy = stats.total > 0 ? Math.round((stats.correct / stats.total) * 100) : 0;
+                
+                return `
+                    <div style="margin: 15px 0;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <span>${leagues[leagueKey].flag} ${leagues[leagueKey].name}</span>
+                            <span>${accuracy}% (${stats.correct}/${stats.total})</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${accuracy}%"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // 📋 Cargar historial
+        function loadHistory() {
+            const tbody = document.getElementById('historyBody');
+            
+            if (predictionHistory.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; opacity: 0.7;">No hay predicciones en el historial</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = predictionHistory.map(pred => `
+                <tr>
+                    <td>${new Date(pred.date).toLocaleDateString('es-ES')}</td>
+                    <td>${leagues[pred.league]?.flag} ${pred.homeTeam} vs ${pred.awayTeam}</td>
+                    <td>${pred.prediction}</td>
+                    <td>${pred.confidence}%</td>
+                    <td class="${pred.status === 'Correcto' ? 'correct' : pred.status === 'Incorrecto' ? 'incorrect' : ''}">
+                        ${pred.status}
+                        ${pred.status === 'Pendiente' ? 
+                            `<button onclick="updatePredictionStatus(${pred.id}, 'Correcto')" style="margin-left: 10px; padding: 2px 8px; font-size: 0.8rem;">✓</button>
+                             <button onclick="updatePredictionStatus(${pred.id}, 'Incorrecto')" style="margin-left: 5px; padding: 2px 8px; font-size: 0.8rem;">✗</button>` : 
+                            ''
+                        }
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // ✅ Actualizar estado de predicción
+        function updatePredictionStatus(predId, status) {
+            const predIndex = predictionHistory.findIndex(p => p.id === predId);
+            if (predIndex !== -1) {
+                predictionHistory[predIndex].status = status;
+                localStorage.setItem('predictionHistory', JSON.stringify(predictionHistory));
+                loadHistory();
+                loadStatistics();
+                showToast(`Predicción marcada como ${status.toLowerCase()}`, 'success');
+            }
+        }
+
+        // 🗑️ Limpiar historial
+        function clearHistory() {
+            if (confirm('¿Estás seguro de que quieres limpiar todo el historial?')) {
+                predictionHistory = [];
+                localStorage.removeItem('predictionHistory');
+                loadHistory();
+                loadStatistics();
+                showToast('Historial limpiado', 'success');
+            }
+        }
+
+        // 🔄 Cambiar sección
+        function showSection(sectionId) {
+            // Ocultar todas las secciones
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remover clase active de todas las pestañas
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Mostrar sección seleccionada
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Agregar clase active a la pestaña correspondiente
+            event.target.classList.add('active');
+        }
+
+        // 🎉 Mostrar notificación
+        function showToast(message, type = 'success') {
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
+            toast.textContent = message;
             
-            const icons = {
-                success: '✅',
-                error: '❌',
-                warning: '⚠️',
-                info: 'ℹ️'
-            };
-
-            toast.innerHTML = `${icons[type]} ${message}`;
             document.body.appendChild(toast);
-
-            // Mostrar toast
+            
             setTimeout(() => toast.classList.add('show'), 100);
-
-            // Ocultar después de 3 segundos
+            
             setTimeout(() => {
                 toast.classList.remove('show');
                 setTimeout(() => toast.remove(), 300);
             }, 3000);
-
-            console.log(`🎉 ${type.toUpperCase()}: ${message}`);
         }
-
-        // 🚀 Inicialización
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('🚀 Aplicación inicializada');
-            showToast('¡Aplicación lista! Selecciona una liga para comenzar', 'info');
-        });
-
-        // 📱 Manejo de errores globales
-        window.addEventListener('error', (e) => {
-            console.error('❌ Error:', e.error);
-            showToast('Ocurrió un error inesperado', 'error');
-        });
     </script>
 </body>
 </html>
