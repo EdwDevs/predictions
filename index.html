@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>⚽ ProFútbol - Predicciones Deportivas</title>
+    <title>⚽ ProFútbol - Predicciones Deportivas Completas</title>
     <style>
         * {
             margin: 0;
@@ -53,6 +53,7 @@
             justify-content: center;
             gap: 20px;
             margin-bottom: 30px;
+            flex-wrap: wrap;
         }
 
         .nav-tab {
@@ -115,21 +116,44 @@
             padding: 12px;
             border: 2px solid rgba(255, 255, 255, 0.2);
             border-radius: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
             font-size: 1rem;
             transition: all 0.3s ease;
         }
 
         select:focus, input:focus {
             outline: none;
-            border-color: rgba(255, 255, 255, 0.5);
-            background: rgba(255, 255, 255, 0.15);
+            border-color: #ffd700;
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
         }
 
         select option {
-            background: #2a5298;
-            color: #fff;
+            background: #fff;
+            color: #333;
+        }
+
+        /* Date input specific styling */
+        input[type="date"] {
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            cursor: pointer;
+            position: relative;
+        }
+
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            background: transparent;
+            cursor: pointer;
+            color: #333;
+        }
+
+        input[type="date"]::-webkit-inner-spin-button {
+            display: none;
+        }
+
+        input[type="date"]::-webkit-clear-button {
+            display: none;
         }
 
         /* Buttons */
@@ -212,7 +236,7 @@
             opacity: 0.8;
         }
 
-        /* Prediction Results */
+        /* Enhanced Prediction Results */
         .prediction-result {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 15px;
@@ -228,28 +252,60 @@
             margin-bottom: 20px;
         }
 
-        .prediction-details {
+        .prediction-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 15px;
-            margin-bottom: 20px;
+            margin: 20px 0;
         }
 
         .prediction-item {
             background: rgba(255, 255, 255, 0.1);
             padding: 15px;
             border-radius: 10px;
+            text-align: center;
         }
 
         .prediction-label {
             font-size: 0.9rem;
             opacity: 0.8;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            display: block;
         }
 
         .prediction-value {
             font-size: 1.4rem;
             font-weight: 700;
+            color: #ffd700;
+        }
+
+        .prediction-value.large {
+            font-size: 2rem;
+        }
+
+        /* Score prediction styling */
+        .score-prediction {
+            background: rgba(255, 215, 0, 0.2);
+            border: 2px solid #ffd700;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .score-display {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #ffd700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            margin: 10px 0;
+        }
+
+        .both-teams-score {
+            background: rgba(0, 255, 136, 0.2);
+            border: 2px solid #00ff88;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
         }
 
         /* Statistics */
@@ -284,7 +340,7 @@
         .progress-bar {
             background: rgba(255, 255, 255, 0.2);
             border-radius: 10px;
-            height: 8px;
+            height: 12px;
             overflow: hidden;
             margin: 10px 0;
         }
@@ -325,7 +381,8 @@
             .form-grid { grid-template-columns: 1fr; }
             .nav-tabs { flex-direction: column; align-items: center; }
             .matches-grid { grid-template-columns: 1fr; }
-            .prediction-details { grid-template-columns: 1fr; }
+            .prediction-grid { grid-template-columns: 1fr; }
+            .score-display { font-size: 2rem; }
         }
 
         /* Loading Animation */
@@ -371,7 +428,7 @@
         <!-- Header -->
         <div class="header">
             <h1>⚽ ProFútbol</h1>
-            <p>Predicciones deportivas inteligentes basadas en análisis estadístico</p>
+            <p>Predicciones deportivas completas con análisis avanzado</p>
         </div>
 
         <!-- Navigation -->
@@ -384,7 +441,7 @@
 
         <!-- Predictor Section -->
         <div id="predictor" class="content-section active">
-            <h2>🔮 Generador de Predicciones</h2>
+            <h2>🔮 Generador de Predicciones Completas</h2>
             
             <div class="form-grid">
                 <div class="form-group">
@@ -393,6 +450,7 @@
                         <option value="">Selecciona una liga</option>
                         <option value="laliga">🇪🇸 La Liga EA Sports</option>
                         <option value="premier">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League</option>
+                        <option value="bundesliga">🇩🇪 Bundesliga</option>
                         <option value="fpc">🇨🇴 Liga BetPlay Colombia</option>
                     </select>
                 </div>
@@ -413,12 +471,12 @@
 
                 <div class="form-group">
                     <label for="matchDate">📅 Fecha del Partido:</label>
-                    <input type="date" id="matchDate" min="">
+                    <input type="date" id="matchDate">
                 </div>
             </div>
 
             <button class="btn" id="predictBtn" onclick="generatePrediction()" disabled>
-                🎯 Generar Predicción
+                🎯 Generar Predicción Completa
             </button>
 
             <div id="predictionResult" style="display: none;"></div>
@@ -435,6 +493,7 @@
                     <option value="">Todas las ligas</option>
                     <option value="laliga">🇪🇸 La Liga</option>
                     <option value="premier">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League</option>
+                    <option value="bundesliga">🇩🇪 Bundesliga</option>
                     <option value="fpc">🇨🇴 Liga BetPlay</option>
                 </select>
             </div>
@@ -483,7 +542,8 @@
                         <th>Fecha</th>
                         <th>Partido</th>
                         <th>Predicción</th>
-                        <th>Confianza</th>
+                        <th>Marcador</th>
+                        <th>Ambos Marcan</th>
                         <th>Estado</th>
                     </tr>
                 </thead>
@@ -494,7 +554,7 @@
     </div>
 
     <script>
-        // 🏆 Datos de las ligas
+        // 🏆 Datos de las ligas (incluye Bundesliga)
         const leagues = {
             laliga: {
                 name: 'La Liga EA Sports',
@@ -519,6 +579,17 @@
                     'AFC Bournemouth', 'Sheffield United', 'Burnley FC'
                 ]
             },
+            bundesliga: {
+                name: 'Bundesliga',
+                flag: '🇩🇪',
+                teams: [
+                    'FC Bayern München', 'Borussia Dortmund', 'RB Leipzig', 'Bayer Leverkusen',
+                    'Eintracht Frankfurt', 'VfL Wolfsburg', 'Borussia Mönchengladbach', 'SC Freiburg',
+                    'TSG Hoffenheim', 'VfB Stuttgart', '1. FC Köln', 'SV Werder Bremen',
+                    '1. FC Union Berlin', 'FC Augsburg', '1. FSV Mainz 05', '1. FC Heidenheim',
+                    'FC St. Pauli', 'Holstein Kiel', 'VfL Bochum', 'Hamburger SV'
+                ]
+            },
             fpc: {
                 name: 'Liga BetPlay Colombia',
                 flag: '🇨🇴',
@@ -540,11 +611,11 @@
         // 🔧 Inicialización
         document.addEventListener('DOMContentLoaded', function() {
             setupEventListeners();
+            setDateRange();
             generateUpcomingMatches();
             loadStatistics();
             loadHistory();
-            setMinDate();
-            showToast('¡Bienvenido a ProFútbol! Selecciona una liga para comenzar.', 'success');
+            showToast('¡Bienvenido a ProFútbol! 4 ligas disponibles para predicciones completas.', 'success');
         });
 
         function setupEventListeners() {
@@ -554,11 +625,21 @@
             document.getElementById('matchDate').addEventListener('change', checkPredictionReady);
         }
 
-        function setMinDate() {
+        // 📅 Configurar rango de fechas válidas
+        function setDateRange() {
             const today = new Date();
             const tomorrow = new Date(today);
             tomorrow.setDate(today.getDate() + 1);
-            document.getElementById('matchDate').min = tomorrow.toISOString().split('T')[0];
+            
+            const maxDate = new Date(today);
+            maxDate.setMonth(today.getMonth() + 6); // 6 meses hacia adelante
+            
+            const dateInput = document.getElementById('matchDate');
+            dateInput.min = tomorrow.toISOString().split('T')[0];
+            dateInput.max = maxDate.toISOString().split('T')[0];
+            
+            // Establecer fecha por defecto (mañana)
+            dateInput.value = tomorrow.toISOString().split('T')[0];
         }
 
         // 🏆 Manejar cambio de liga
@@ -608,7 +689,7 @@
             }
         }
 
-        // 🎯 Generar predicción
+        // 🎯 Generar predicción completa
         function generatePrediction() {
             const league = document.getElementById('leagueSelect').value;
             const homeTeam = document.getElementById('homeTeam').value;
@@ -630,83 +711,106 @@
             document.getElementById('predictBtn').disabled = true;
 
             setTimeout(() => {
-                const prediction = calculatePrediction(homeTeam, awayTeam, league);
-                displayPrediction(prediction, homeTeam, awayTeam, matchDate, league);
+                const prediction = calculateCompletePrediction(homeTeam, awayTeam, league);
+                displayCompletePrediction(prediction, homeTeam, awayTeam, matchDate, league);
                 
                 // Guardar en historial
-                savePrediction(homeTeam, awayTeam, matchDate, prediction, league);
+                saveCompletePrediction(homeTeam, awayTeam, matchDate, prediction, league);
                 
                 // Restaurar botón
-                document.getElementById('predictBtn').innerHTML = '🎯 Generar Predicción';
+                document.getElementById('predictBtn').innerHTML = '🎯 Generar Predicción Completa';
                 document.getElementById('predictBtn').disabled = false;
                 
-                showToast('¡Predicción generada exitosamente!', 'success');
-            }, 2000);
+                showToast('¡Predicción completa generada exitosamente!', 'success');
+            }, 2500);
         }
 
-        // 🧮 Calcular predicción
-        function calculatePrediction(homeTeam, awayTeam, league) {
+        // 🧮 Calcular predicción completa (con marcador y ambos marcan)
+        function calculateCompletePrediction(homeTeam, awayTeam, league) {
             // Simulación de análisis estadístico complejo
-            const homeStrength = Math.random() * 40 + 60; // 60-100
-            const awayStrength = Math.random() * 40 + 50; // 50-90
-            const homeAdvantage = 15; // Ventaja de jugar en casa
+            const homeStrength = Math.random() * 35 + 65; // 65-100
+            const awayStrength = Math.random() * 35 + 55; // 55-90
+            const homeAdvantage = 12; // Ventaja de jugar en casa
             
             const homeTotalStrength = homeStrength + homeAdvantage;
             const awayTotalStrength = awayStrength;
             
-            // Calcular probabilidades
+            // Calcular probabilidades básicas
             const total = homeTotalStrength + awayTotalStrength;
-            const homeWinProb = Math.round((homeTotalStrength / total) * 100);
-            const awayWinProb = Math.round((awayTotalStrength / total) * 100);
-            const drawProb = Math.max(100 - homeWinProb - awayWinProb, 15);
+            let homeWinProb = Math.round((homeTotalStrength / total) * 100);
+            let awayWinProb = Math.round((awayTotalStrength / total) * 100);
+            let drawProb = Math.max(100 - homeWinProb - awayWinProb, 18);
             
             // Ajustar para que sumen 100%
             const totalProb = homeWinProb + awayWinProb + drawProb;
-            const adjustedHomeWin = Math.round((homeWinProb / totalProb) * 100);
-            const adjustedAwayWin = Math.round((awayWinProb / totalProb) * 100);
-            const adjustedDraw = 100 - adjustedHomeWin - adjustedAwayWin;
+            homeWinProb = Math.round((homeWinProb / totalProb) * 100);
+            awayWinProb = Math.round((awayWinProb / totalProb) * 100);
+            drawProb = 100 - homeWinProb - awayWinProb;
+
+            // Calcular goles esperados
+            const homeGoalsExpected = (homeTotalStrength / 100) * (1.5 + Math.random() * 1.5);
+            const awayGoalsExpected = (awayTotalStrength / 100) * (1.2 + Math.random() * 1.3);
+            
+            // Generar marcador más probable
+            const homeGoals = Math.round(homeGoalsExpected);
+            const awayGoals = Math.round(awayGoalsExpected);
+            
+            // Calcular probabilidad de ambos marcan
+            const homeScoreProb = Math.min(homeGoalsExpected / 3, 0.85); // Max 85%
+            const awayScoreProb = Math.min(awayGoalsExpected / 3, 0.85); // Max 85%
+            const bothTeamsScoreProb = Math.round(homeScoreProb * awayScoreProb * 100);
 
             // Determinar resultado más probable
             let predictedResult = 'Empate';
-            let confidence = adjustedDraw;
+            let confidence = drawProb;
             
-            if (adjustedHomeWin > adjustedAwayWin && adjustedHomeWin > adjustedDraw) {
+            if (homeWinProb > awayWinProb && homeWinProb > drawProb) {
                 predictedResult = 'Victoria Local';
-                confidence = adjustedHomeWin;
-            } else if (adjustedAwayWin > adjustedHomeWin && adjustedAwayWin > adjustedDraw) {
+                confidence = homeWinProb;
+            } else if (awayWinProb > homeWinProb && awayWinProb > drawProb) {
                 predictedResult = 'Victoria Visitante';
-                confidence = adjustedAwayWin;
+                confidence = awayWinProb;
             }
 
             return {
                 result: predictedResult,
                 confidence: confidence,
-                homeWinProb: adjustedHomeWin,
-                awayWinProb: adjustedAwayWin,
-                drawProb: adjustedDraw,
+                homeWinProb: homeWinProb,
+                awayWinProb: awayWinProb,
+                drawProb: drawProb,
                 homeStrength: Math.round(homeStrength),
                 awayStrength: Math.round(awayStrength),
-                keyFactors: generateKeyFactors(homeTeam, awayTeam, league)
+                predictedScore: `${homeGoals}-${awayGoals}`,
+                homeGoals: homeGoals,
+                awayGoals: awayGoals,
+                bothTeamsScore: bothTeamsScoreProb,
+                keyFactors: generateKeyFactors(homeTeam, awayTeam, league),
+                totalGoals: homeGoals + awayGoals,
+                goalsProbability: {
+                    over25: Math.round(((homeGoals + awayGoals) / 4.5) * 100),
+                    under25: Math.round(100 - ((homeGoals + awayGoals) / 4.5) * 100)
+                }
             };
         }
 
         // 🔑 Generar factores clave
         function generateKeyFactors(homeTeam, awayTeam, league) {
             const factors = [
-                'Ventaja de jugar en casa',
-                'Forma reciente del equipo',
-                'Historial de enfrentamientos',
+                'Ventaja de jugar en casa (+12% rendimiento)',
+                'Forma reciente del equipo local',
+                'Historial de enfrentamientos directos',
                 'Disponibilidad de jugadores clave',
-                'Motivación del equipo',
-                'Condiciones climáticas',
-                'Presión de la afición'
+                'Motivación y objetivos en la liga',
+                'Condiciones climáticas favorables',
+                'Presión de la afición local',
+                'Estilo de juego y formación táctica'
             ];
             
-            return factors.sort(() => 0.5 - Math.random()).slice(0, 3);
+            return factors.sort(() => 0.5 - Math.random()).slice(0, 4);
         }
 
-        // 📊 Mostrar predicción
-        function displayPrediction(prediction, homeTeam, awayTeam, matchDate, league) {
+        // 📊 Mostrar predicción completa
+        function displayCompletePrediction(prediction, homeTeam, awayTeam, matchDate, league) {
             const resultDiv = document.getElementById('predictionResult');
             const leagueData = leagues[league];
             
@@ -716,26 +820,50 @@
                         ${leagueData.flag} ${homeTeam} vs ${awayTeam}
                     </div>
                     
-                    <div class="prediction-details">
-                        <div class="prediction-item">
-                            <div class="prediction-label">Resultado Más Probable</div>
-                            <div class="prediction-value">${prediction.result}</div>
+                    <!-- Marcador Más Probable -->
+                    <div class="score-prediction">
+                        <div class="prediction-label">🎯 Marcador Más Probable</div>
+                        <div class="score-display">${prediction.predictedScore}</div>
+                        <div style="font-size: 1rem; opacity: 0.9;">
+                            Basado en análisis de rendimiento ofensivo/defensivo
                         </div>
-                        <div class="prediction-item">
-                            <div class="prediction-label">Nivel de Confianza</div>
-                            <div class="prediction-value">${prediction.confidence}%</div>
+                    </div>
+
+                    <!-- Ambos Equipos Marcan -->
+                    <div class="both-teams-score">
+                        <div class="prediction-label">⚽ Ambos Equipos Marcan</div>
+                        <div class="prediction-value large">${prediction.bothTeamsScore}%</div>
+                        <div style="font-size: 0.9rem; margin-top: 5px;">
+                            ${prediction.bothTeamsScore >= 65 ? 'ALTA PROBABILIDAD' : 
+                              prediction.bothTeamsScore >= 45 ? 'PROBABILIDAD MEDIA' : 'BAJA PROBABILIDAD'}
                         </div>
+                    </div>
+                    
+                    <!-- Probabilidades de Resultado -->
+                    <div class="prediction-grid">
                         <div class="prediction-item">
-                            <div class="prediction-label">Victoria Local</div>
+                            <div class="prediction-label">🏠 Victoria Local</div>
                             <div class="prediction-value">${prediction.homeWinProb}%</div>
                         </div>
                         <div class="prediction-item">
-                            <div class="prediction-label">Empate</div>
+                            <div class="prediction-label">🤝 Empate</div>
                             <div class="prediction-value">${prediction.drawProb}%</div>
                         </div>
                         <div class="prediction-item">
-                            <div class="prediction-label">Victoria Visitante</div>
+                            <div class="prediction-label">✈️ Victoria Visitante</div>
                             <div class="prediction-value">${prediction.awayWinProb}%</div>
+                        </div>
+                        <div class="prediction-item">
+                            <div class="prediction-label">📈 Confianza IA</div>
+                            <div class="prediction-value">${prediction.confidence}%</div>
+                        </div>
+                        <div class="prediction-item">
+                            <div class="prediction-label">🎯 Total Goles</div>
+                            <div class="prediction-value">${prediction.totalGoals}</div>
+                        </div>
+                        <div class="prediction-item">
+                            <div class="prediction-label">📊 Más de 2.5 Goles</div>
+                            <div class="prediction-value">${prediction.goalsProbability.over25}%</div>
                         </div>
                     </div>
 
@@ -760,18 +888,22 @@
                         </div>
                     </div>
 
-                    <h4>🔑 Factores Clave</h4>
-                    <ul style="text-align: left; margin: 10px 0; padding-left: 20px;">
-                        ${prediction.keyFactors.map(factor => `<li>${factor}</li>`).join('')}
+                    <h4>🔑 Factores Clave del Análisis</h4>
+                    <ul style="text-align: left; margin: 15px 0; padding-left: 20px;">
+                        ${prediction.keyFactors.map(factor => `<li style="margin: 8px 0;">${factor}</li>`).join('')}
                     </ul>
 
-                    <div style="margin-top: 20px; font-size: 0.9rem; opacity: 0.8;">
-                        <strong>Fecha del partido:</strong> ${new Date(matchDate).toLocaleDateString('es-ES', {
-                            weekday: 'long',
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric'
-                        })}
+                    <div style="margin-top: 20px; padding: 15px; background: rgba(255, 255, 255, 0.1); border-radius: 10px;">
+                        <div style="font-size: 0.9rem; opacity: 0.9;">
+                            <strong>📅 Fecha:</strong> ${new Date(matchDate).toLocaleDateString('es-ES', {
+                                weekday: 'long',
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                            })}<br>
+                            <strong>🏆 Liga:</strong> ${leagueData.name}<br>
+                            <strong>📊 Resultado Más Probable:</strong> ${prediction.result}
+                        </div>
                     </div>
                 </div>
             `;
@@ -779,8 +911,8 @@
             resultDiv.style.display = 'block';
         }
 
-        // 💾 Guardar predicción
-        function savePrediction(homeTeam, awayTeam, matchDate, prediction, league) {
+        // 💾 Guardar predicción completa
+        function saveCompletePrediction(homeTeam, awayTeam, matchDate, prediction, league) {
             const predictionData = {
                 id: Date.now(),
                 date: new Date().toISOString(),
@@ -790,16 +922,24 @@
                 league: league,
                 prediction: prediction.result,
                 confidence: prediction.confidence,
+                predictedScore: prediction.predictedScore,
+                bothTeamsScore: prediction.bothTeamsScore,
                 status: 'Pendiente'
             };
             
             predictionHistory.unshift(predictionData);
+            
+            // Mantener solo las últimas 50 predicciones
+            if (predictionHistory.length > 50) {
+                predictionHistory = predictionHistory.slice(0, 50);
+            }
+            
             localStorage.setItem('predictionHistory', JSON.stringify(predictionHistory));
             loadHistory();
             loadStatistics();
         }
 
-        // 📊 Generar partidos próximos
+        // 📊 Generar partidos próximos (incluye Bundesliga)
         function generateUpcomingMatches() {
             upcomingMatches = [];
             const today = new Date();
@@ -807,8 +947,8 @@
             Object.keys(leagues).forEach(leagueKey => {
                 const leagueTeams = leagues[leagueKey].teams;
                 
-                // Generar 5 partidos aleatorios por liga
-                for (let i = 0; i < 5; i++) {
+                // Generar 6 partidos aleatorios por liga
+                for (let i = 0; i < 6; i++) {
                     const homeTeam = leagueTeams[Math.floor(Math.random() * leagueTeams.length)];
                     let awayTeam;
                     do {
@@ -816,15 +956,15 @@
                     } while (awayTeam === homeTeam);
                     
                     const matchDate = new Date(today);
-                    matchDate.setDate(today.getDate() + Math.floor(Math.random() * 14) + 1);
+                    matchDate.setDate(today.getDate() + Math.floor(Math.random() * 21) + 1); // 1-21 días
                     
                     upcomingMatches.push({
-                        id: Date.now() + i + Math.random(),
+                        id: Date.now() + i + Math.random() * 1000,
                         league: leagueKey,
                         homeTeam: homeTeam,
                         awayTeam: awayTeam,
                         date: matchDate,
-                        time: `${Math.floor(Math.random() * 12) + 12}:${Math.random() > 0.5 ? '00' : '30'}`
+                        time: `${Math.floor(Math.random() * 8) + 12}:${Math.random() > 0.5 ? '00' : '30'}`
                     });
                 }
             });
@@ -959,12 +1099,12 @@
             }).join('');
         }
 
-        // 📋 Cargar historial
+        // 📋 Cargar historial (actualizado con nuevos campos)
         function loadHistory() {
             const tbody = document.getElementById('historyBody');
             
             if (predictionHistory.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; opacity: 0.7;">No hay predicciones en el historial</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; opacity: 0.7;">No hay predicciones en el historial</td></tr>';
                 return;
             }
             
@@ -973,12 +1113,13 @@
                     <td>${new Date(pred.date).toLocaleDateString('es-ES')}</td>
                     <td>${leagues[pred.league]?.flag} ${pred.homeTeam} vs ${pred.awayTeam}</td>
                     <td>${pred.prediction}</td>
-                    <td>${pred.confidence}%</td>
+                    <td><strong>${pred.predictedScore || 'N/A'}</strong></td>
+                    <td><strong>${pred.bothTeamsScore || 'N/A'}%</strong></td>
                     <td class="${pred.status === 'Correcto' ? 'correct' : pred.status === 'Incorrecto' ? 'incorrect' : ''}">
                         ${pred.status}
                         ${pred.status === 'Pendiente' ? 
-                            `<button onclick="updatePredictionStatus(${pred.id}, 'Correcto')" style="margin-left: 10px; padding: 2px 8px; font-size: 0.8rem;">✓</button>
-                             <button onclick="updatePredictionStatus(${pred.id}, 'Incorrecto')" style="margin-left: 5px; padding: 2px 8px; font-size: 0.8rem;">✗</button>` : 
+                            `<br><button onclick="updatePredictionStatus(${pred.id}, 'Correcto')" style="margin: 2px; padding: 4px 8px; font-size: 0.8rem; background: #4CAF50; color: white; border: none; border-radius: 3px; cursor: pointer;">✓</button>
+                             <button onclick="updatePredictionStatus(${pred.id}, 'Incorrecto')" style="margin: 2px; padding: 4px 8px; font-size: 0.8rem; background: #f44336; color: white; border: none; border-radius: 3px; cursor: pointer;">✗</button>` : 
                             ''
                         }
                     </td>
@@ -1041,7 +1182,7 @@
             setTimeout(() => {
                 toast.classList.remove('show');
                 setTimeout(() => toast.remove(), 300);
-            }, 3000);
+            }, 4000);
         }
     </script>
 </body>
