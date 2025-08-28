@@ -649,21 +649,19 @@
             document.getElementById('matchDate').addEventListener('change', checkPredictionReady);
         }
 
-        // 📅 Configurar rango de fechas válidas
+        // 📅 Configurar rango de fechas válidas (mínimo: hoy)
         function setDateRange() {
             const today = new Date();
-            const tomorrow = new Date(today);
-            tomorrow.setDate(today.getDate() + 1);
             
             const maxDate = new Date(today);
             maxDate.setMonth(today.getMonth() + 6); // 6 meses hacia adelante
             
             const dateInput = document.getElementById('matchDate');
-            dateInput.min = tomorrow.toISOString().split('T')[0];
+            dateInput.min = today.toISOString().split('T')[0]; // Mínimo: hoy
             dateInput.max = maxDate.toISOString().split('T')[0];
             
-            // Establecer fecha por defecto (mañana)
-            dateInput.value = tomorrow.toISOString().split('T')[0];
+            // Establecer fecha por defecto (hoy)
+            dateInput.value = today.toISOString().split('T')[0];
         }
 
         // 🏆 Manejar cambio de liga
@@ -708,14 +706,14 @@
             const today = new Date();
             const selectedDate = new Date(matchDate);
             
-            const isReady = league && homeTeam && awayTeam && matchDate && homeTeam !== awayTeam && selectedDate > today;
+            const isReady = league && homeTeam && awayTeam && matchDate && homeTeam !== awayTeam && selectedDate >= today;
             document.getElementById('predictBtn').disabled = !isReady;
             
             if (homeTeam && awayTeam && homeTeam === awayTeam) {
                 showToast('Un equipo no puede jugar contra sí mismo ⚠️', 'error');
             }
-            if (matchDate && selectedDate <= today) {
-                showToast('La fecha debe ser futura para predicciones válidas 📅', 'warning');
+            if (matchDate && selectedDate < today) {
+                showToast('La fecha debe ser hoy o futura para predicciones válidas 📅', 'warning');
             }
         }
 
