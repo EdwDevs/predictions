@@ -3,445 +3,603 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>⚽ Pronósticos Deportivos Pro - Experiencia Inmersiva</title>
-    <link rel="stylesheet" href="styles-immersive.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <title>⚽ Selector de Equipos por Liga</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #34495e;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        .custom-select {
+            position: relative;
+            width: 100%;
+        }
+
+        select {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e1e8ed;
+            border-radius: 12px;
+            font-size: 1rem;
+            background: white;
+            color: #2c3e50;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 20px;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+            transform: translateY(-1px);
+        }
+
+        select:hover {
+            border-color: #3498db;
+            transform: translateY(-1px);
+        }
+
+        .teams-section {
+            display: none;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .teams-section.show {
+            display: block;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .selected-teams {
+            margin-top: 25px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            border-left: 4px solid #3498db;
+            display: none;
+        }
+
+        .selected-teams.show {
+            display: block;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .selected-teams h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .team-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .team-flag {
+            font-size: 1.5rem;
+        }
+
+        .team-details {
+            flex: 1;
+            text-align: left;
+        }
+
+        .team-name {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 1.1rem;
+        }
+
+        .league-name {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        .analyze-btn {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .analyze-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .stats-preview {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #3498db;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #2ecc71;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.error {
+            background: #e74c3c;
+        }
+
+        .toast.warning {
+            background: #f39c12;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                margin: 20px;
+                padding: 30px 20px;
+            }
+
+            .header h1 {
+                font-size: 1.6rem;
+            }
+
+            .stats-preview {
+                grid-template-columns: 1fr;
+            }
+
+            .team-info {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
 </head>
-<body data-theme="dark">
-    <!-- Partículas de fondo -->
-    <div id="particles-js"></div>
-    
-    <!-- Efectos de sonido -->
-    <audio id="clickSound" preload="auto">
-        <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="successSound" preload="auto">
-        <source src="https://www.soundjay.com/misc/sounds/success-fanfare.mp3" type="audio/mpeg">
-    </audio>
-
+<body>
     <div class="container">
-        <!-- Header Interactivo -->
-        <header class="header-immersive">
-            <div class="header-content">
-                <h1 class="glitch-effect" data-text="⚽ Pronósticos Deportivos Pro">
-                    <i class="fas fa-futbol rotating"></i> Pronósticos Deportivos Pro
-                </h1>
-                <p class="typing-animation">Análisis estadístico con IA avanzada en tiempo real</p>
-                
-                <!-- Puntuación del usuario -->
-                <div class="user-score">
-                    <div class="score-badge">
-                        <i class="fas fa-trophy"></i>
-                        <span id="userScore">0</span> puntos
-                    </div>
-                    <div class="level-progress">
-                        <div class="progress-bar">
-                            <div class="progress-fill" id="progressFill"></div>
-                        </div>
-                        <span class="level-text">Nivel <span id="userLevel">1</span></span>
-                    </div>
+        <!-- Header -->
+        <div class="header">
+            <h1>⚽ Selector de Equipos</h1>
+            <p>Selecciona una liga para ver los equipos disponibles</p>
+        </div>
+
+        <!-- Selector de Liga -->
+        <div class="form-group">
+            <label for="leagueSelect">🏆 Seleccionar Liga:</label>
+            <div class="custom-select">
+                <select id="leagueSelect">
+                    <option value="">-- Selecciona una Liga --</option>
+                    <option value="laliga">🇪🇸 La Liga EA Sports</option>
+                    <option value="premier">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League</option>
+                    <option value="fpc">🇨🇴 Liga BetPlay Colombia</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Selector de Equipos -->
+        <div class="form-group teams-section" id="teamsSection">
+            <label for="teamSelect">⚽ Seleccionar Equipo:</label>
+            <div class="custom-select">
+                <select id="teamSelect">
+                    <option value="">-- Primero selecciona una liga --</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Información de Equipos Seleccionados -->
+        <div class="selected-teams" id="selectedTeams">
+            <h3>📊 Equipo Seleccionado</h3>
+            <div id="teamInfo"></div>
+            <div class="stats-preview" id="statsPreview">
+                <div class="stat-item">
+                    <span class="stat-value" id="attackStat">85</span>
+                    <span class="stat-label">Ataque</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="defenseStat">78</span>
+                    <span class="stat-label">Defensa</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="formStat">92</span>
+                    <span class="stat-label">Forma</span>
                 </div>
             </div>
-
-            <!-- Toggle tema + indicadores -->
-            <div class="header-controls">
-                <button id="themeToggle" class="theme-toggle">
-                    <i class="fas fa-moon"></i>
-                </button>
-                <div class="live-indicator pulse-glow">
-                    <div class="pulse-ring"></div>
-                    <span>EN VIVO</span>
-                </div>
-                <div class="confidence-meter">
-                    <div class="meter-fill" id="globalConfidence"></div>
-                    <span id="confidenceLabel">Confianza IA</span>
-                </div>
-            </div>
-        </header>
-
-        <!-- Panel de Control Interactivo -->
-        <section class="control-panel-immersive">
-            <div class="search-section-advanced">
-                <div class="search-container">
-                    <input type="text" id="teamSearch" placeholder="Buscar equipos o díctalo..." class="search-input-voice">
-                    <button id="voiceSearch" class="voice-btn">
-                        <i class="fas fa-microphone"></i>
-                    </button>
-                    <button id="analyzeBtn" class="analyze-btn-3d">
-                        <span class="btn-text">🔍 Analizar</span>
-                        <div class="btn-ripple"></div>
-                    </button>
-                </div>
-                
-                <!-- Sugerencias avanzadas -->
-                <div id="smartSuggestions" class="smart-suggestions"></div>
-            </div>
-            
-            <div class="filters-advanced">
-                <div class="filter-card">
-                    <select id="leagueFilter" class="select-3d">
-                        <option value="">🌍 Todas las Ligas</option>
-                        <option value="laliga">🇪🇸 La Liga EA Sports</option>
-                        <option value="premier">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League</option>
-                        <option value="fpc">🇨🇴 Liga BetPlay Colombia</option>
-                    </select>
-                </div>
-                
-                <div class="filter-card">
-                    <select id="timeFilter" class="select-3d">
-                        <option value="today">📅 Hoy</option>
-                        <option value="tomorrow">➡️ Mañana</option>
-                        <option value="week">📆 Esta Semana</option>
-                    </select>
-                </div>
-                
-                <!-- AI Confidence Slider -->
-                <div class="filter-card">
-                    <label>🤖 Nivel IA:</label>
-                    <input type="range" id="aiLevel" min="1" max="5" value="3" class="ai-slider">
-                    <span id="aiLevelText">Estándar</span>
-                </div>
-            </div>
-
-            <!-- Estadísticas en tiempo real -->
-            <div class="real-time-stats">
-                <div class="stat-card animated" data-stat="matches">
-                    <i class="fas fa-futbol"></i>
-                    <span class="stat-number" id="totalMatches">0</span>
-                    <span class="stat-label">Partidos Hoy</span>
-                </div>
-                <div class="stat-card animated" data-stat="accuracy">
-                    <i class="fas fa-target"></i>
-                    <span class="stat-number" id="aiAccuracy">87%</span>
-                    <span class="stat-label">Precisión IA</span>
-                </div>
-                <div class="stat-card animated" data-stat="predictions">
-                    <i class="fas fa-brain"></i>
-                    <span class="stat-number" id="todayPredictions">0</span>
-                    <span class="stat-label">Predicciones</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- Vista de Partidos Ultra-Interactiva -->
-        <section class="matches-display-immersive" id="matchesDisplay">
-            <div class="matches-header-3d" style="display: none;">
-                <h3 id="matchesTitle" class="title-glow">📅 Partidos Disponibles</h3>
-                <div class="matches-controls">
-                    <div class="view-toggle">
-                        <button class="view-btn active" data-view="grid">
-                            <i class="fas fa-th"></i> Grid
-                        </button>
-                        <button class="view-btn" data-view="list">
-                            <i class="fas fa-list"></i> Lista
-                        </button>
-                    </div>
-                    <button id="refreshMatches" class="refresh-btn-3d">
-                        <i class="fas fa-sync-alt"></i> Actualizar
-                    </button>
-                </div>
-            </div>
-            
-            <div class="matches-grid-immersive" id="matchesGrid"></div>
-        </section>
-
-        <!-- Análisis Principal Ultra-Interactivo -->
-        <main class="main-content-immersive">
-            <!-- Información del Partido con efectos 3D -->
-            <div class="match-info-3d" id="matchInfo">
-                <div class="teams-container">
-                    <div class="team-card home-team-3d" id="homeTeamCard">
-                        <div class="team-bg-effect"></div>
-                        <div class="team-content">
-                            <img src="https://via.placeholder.com/100x100" alt="Equipo Local" id="localTeamLogo" class="team-logo-3d">
-                            <h3 id="localTeamName" class="team-name-glow">Equipo Local</h3>
-                            <div class="team-stats-interactive">
-                                <div class="stat-bubble" data-stat="position">
-                                    <span class="label">Posición</span>
-                                    <span class="value" id="localPosition">-</span>
-                                </div>
-                                <div class="stat-bubble" data-stat="points">
-                                    <span class="label">Puntos</span>
-                                    <span class="value" id="localPoints">-</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="team-energy-bar">
-                            <div class="energy-fill" id="homeTeamEnergy"></div>
-                        </div>
-                    </div>
-
-                    <div class="vs-section-immersive">
-                        <div class="match-time-3d" id="matchTime">15:00</div>
-                        <div class="match-date-glow" id="matchDate">Hoy</div>
-                        
-                        <!-- Predicción con efectos especiales -->
-                        <div class="prediction-orb" id="predictionOrb">
-                            <div class="orb-inner">
-                                <div class="prediction-text" id="predictionText">Analizando...</div>
-                                <div class="confidence-ring">
-                                    <svg class="ring-svg" viewBox="0 0 100 100">
-                                        <circle cx="50" cy="50" r="40" class="ring-bg"/>
-                                        <circle cx="50" cy="50" r="40" class="ring-progress" id="confidenceRing"/>
-                                    </svg>
-                                    <div class="confidence-percent" id="confidencePercent">0%</div>
-                                </div>
-                            </div>
-                            <div class="orb-glow"></div>
-                        </div>
-                    </div>
-
-                    <div class="team-card away-team-3d" id="awayTeamCard">
-                        <div class="team-bg-effect"></div>
-                        <div class="team-content">
-                            <img src="https://via.placeholder.com/100x100" alt="Equipo Visitante" id="visitanteTeamLogo" class="team-logo-3d">
-                            <h3 id="visitanteTeamName" class="team-name-glow">Equipo Visitante</h3>
-                            <div class="team-stats-interactive">
-                                <div class="stat-bubble" data-stat="position">
-                                    <span class="label">Posición</span>
-                                    <span class="value" id="visitantePosition">-</span>
-                                </div>
-                                <div class="stat-bubble" data-stat="points">
-                                    <span class="label">Puntos</span>
-                                    <span class="value" id="visitantePoints">-</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="team-energy-bar">
-                            <div class="energy-fill" id="awayTeamEnergy"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Batalla de estadísticas animada -->
-                <div class="stats-battle" id="statsBattle">
-                    <div class="battle-header">
-                        <h4>⚔️ Batalla de Estadísticas</h4>
-                        <button class="animate-battle-btn" id="animateBattle">🎬 Animar Batalla</button>
-                    </div>
-                    
-                    <div class="battle-stats">
-                        <div class="stat-comparison" data-stat="attack">
-                            <div class="stat-bar left-bar" id="homeAttackBar"></div>
-                            <div class="stat-label">Ataque</div>
-                            <div class="stat-bar right-bar" id="awayAttackBar"></div>
-                        </div>
-                        
-                        <div class="stat-comparison" data-stat="defense">
-                            <div class="stat-bar left-bar" id="homeDefenseBar"></div>
-                            <div class="stat-label">Defensa</div>
-                            <div class="stat-bar right-bar" id="awayDefenseBar"></div>
-                        </div>
-                        
-                        <div class="stat-comparison" data-stat="form">
-                            <div class="stat-bar left-bar" id="homeFormBar"></div>
-                            <div class="stat-label">Forma</div>
-                            <div class="stat-bar right-bar" id="awayFormBar"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Grid de Análisis Interactivo -->
-            <div class="analysis-grid-immersive">
-                <!-- Radar Chart Interactivo -->
-                <div class="analysis-card-3d radar-card">
-                    <h3><i class="fas fa-radar-dish"></i> Radar de Rendimiento</h3>
-                    <div class="radar-container">
-                        <canvas id="radarChart" width="300" height="300"></canvas>
-                        <div class="radar-controls">
-                            <button class="radar-btn" data-metric="attack">Ataque</button>
-                            <button class="radar-btn" data-metric="defense">Defensa</button>
-                            <button class="radar-btn active" data-metric="all">Todo</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Mapa de Calor Interactivo -->
-                <div class="analysis-card-3d heatmap-card">
-                    <h3><i class="fas fa-fire"></i> Mapa de Intensidad</h3>
-                    <div class="field-heatmap" id="fieldHeatmap">
-                        <div class="field-zones">
-                            <div class="zone" data-zone="attack" style="--intensity: 0.8"></div>
-                            <div class="zone" data-zone="midfield" style="--intensity: 0.6"></div>
-                            <div class="zone" data-zone="defense" style="--intensity: 0.4"></div>
-                        </div>
-                        <div class="intensity-legend">
-                            <span>Baja</span>
-                            <div class="gradient-bar"></div>
-                            <span>Alta</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Timeline de Forma Reciente -->
-                <div class="analysis-card-3d timeline-card">
-                    <h3><i class="fas fa-timeline"></i> Timeline de Forma</h3>
-                    <div class="form-timeline" id="formTimeline">
-                        <!-- Se generará dinámicamente -->
-                    </div>
-                </div>
-
-                <!-- Simulador de Partido -->
-                <div class="analysis-card-3d simulator-card">
-                    <h3><i class="fas fa-play"></i> Simulador de Partido</h3>
-                    <div class="match-simulator">
-                        <button class="simulate-btn" id="simulateMatch">
-                            <i class="fas fa-dice"></i> Simular Partido
-                        </button>
-                        <div class="simulation-result" id="simulationResult">
-                            <div class="score-display">
-                                <span class="home-score">0</span>
-                                <span class="score-separator">-</span>
-                                <span class="away-score">0</span>
-                            </div>
-                            <div class="match-events" id="matchEvents"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Probabilidades Dinámicas -->
-                <div class="analysis-card-3d probabilities-card">
-                    <h3><i class="fas fa-percentage"></i> Probabilidades en Vivo</h3>
-                    <div class="probability-wheels">
-                        <div class="prob-wheel" data-outcome="home">
-                            <div class="wheel-bg"></div>
-                            <div class="wheel-fill" style="--percentage: 45"></div>
-                            <div class="wheel-center">
-                                <span class="percentage">45%</span>
-                                <span class="label">Local</span>
-                            </div>
-                        </div>
-                        
-                        <div class="prob-wheel" data-outcome="draw">
-                            <div class="wheel-bg"></div>
-                            <div class="wheel-fill" style="--percentage: 25"></div>
-                            <div class="wheel-center">
-                                <span class="percentage">25%</span>
-                                <span class="label">Empate</span>
-                            </div>
-                        </div>
-                        
-                        <div class="prob-wheel" data-outcome="away">
-                            <div class="wheel-bg"></div>
-                            <div class="wheel-fill" style="--percentage: 30"></div>
-                            <div class="wheel-center">
-                                <span class="percentage">30%</span>
-                                <span class="label">Visitante</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Factores de Impacto Interactivos -->
-                <div class="analysis-card-3d factors-card">
-                    <h3><i class="fas fa-weight-hanging"></i> Factores de Impacto</h3>
-                    <div class="impact-factors" id="impactFactors">
-                        <!-- Se generarán dinámicamente -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- Resultado Final Inmersivo -->
-            <div class="prediction-summary-immersive">
-                <div class="summary-header">
-                    <h3 class="title-3d">🔮 Pronóstico Final de IA</h3>
-                    <div class="ai-thinking" id="aiThinking">
-                        <div class="thinking-dots">
-                            <span></span><span></span><span></span>
-                        </div>
-                        <span class="thinking-text">IA procesando datos...</span>
-                    </div>
-                </div>
-                
-                <div class="prediction-details-3d" id="predictionDetails">
-                    <div class="main-prediction">
-                        <div class="prediction-badge" id="mainPredictionBadge">
-                            <span class="result-text" id="finalResult">Resultado</span>
-                            <div class="confidence-bar-3d">
-                                <div class="confidence-fill-3d" id="finalConfidenceFill"></div>
-                                <span class="confidence-text-3d" id="finalConfidenceText">0%</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="prediction-breakdown">
-                        <div class="breakdown-item" data-factor="form">
-                            <i class="fas fa-chart-line"></i>
-                            <span class="factor-name">Forma Reciente</span>
-                            <div class="factor-impact">
-                                <div class="impact-bar"></div>
-                                <span class="impact-value">+15%</span>
-                            </div>
-                        </div>
-                        
-                        <div class="breakdown-item" data-factor="h2h">
-                            <i class="fas fa-history"></i>
-                            <span class="factor-name">Historial H2H</span>
-                            <div class="factor-impact">
-                                <div class="impact-bar"></div>
-                                <span class="impact-value">+8%</span>
-                            </div>
-                        </div>
-                        
-                        <div class="breakdown-item" data-factor="injuries">
-                            <i class="fas fa-user-injured"></i>
-                            <span class="factor-name">Lesiones</span>
-                            <div class="factor-impact">
-                                <div class="impact-bar negative"></div>
-                                <span class="impact-value">-5%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
-
-        <!-- Footer Interactivo -->
-        <footer class="footer-immersive">
-            <div class="footer-content">
-                <div class="footer-stats">
-                    <div class="footer-stat">
-                        <i class="fas fa-database"></i>
-                        <span>Datos actualizados cada 30 segundos</span>
-                    </div>
-                    <div class="footer-stat">
-                        <i class="fas fa-clock"></i>
-                        <span>Última actualización: <span id="lastUpdate">--:--:--</span></span>
-                    </div>
-                    <div class="footer-stat">
-                        <i class="fas fa-server"></i>
-                        <span>Estado del servidor: <span class="status-online">Online</span></span>
-                    </div>
-                </div>
-                
-                <div class="footer-social">
-                    <button class="social-btn" data-action="share">
-                        <i class="fas fa-share-alt"></i> Compartir
-                    </button>
-                    <button class="social-btn" data-action="save">
-                        <i class="fas fa-bookmark"></i> Guardar
-                    </button>
-                    <button class="social-btn" data-action="export">
-                        <i class="fas fa-download"></i> Exportar
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Easter Egg -->
-            <div class="easter-egg" id="easterEgg" style="display: none;">
-                <div class="trophy-animation">
-                    <i class="fas fa-trophy"></i>
-                    <span>¡Has desbloqueado el modo experto!</span>
-                </div>
-            </div>
-        </footer>
+        </div>
     </div>
 
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="script-immersive.js"></script>
+    <script>
+        // 🏆 Datos de las ligas y equipos
+        const leagues = {
+            laliga: {
+                name: 'La Liga EA Sports',
+                flag: '🇪🇸',
+                country: 'España',
+                teams: [
+                    { name: 'Real Madrid', city: 'Madrid', founded: 1902 },
+                    { name: 'FC Barcelona', city: 'Barcelona', founded: 1899 },
+                    { name: 'Atlético de Madrid', city: 'Madrid', founded: 1903 },
+                    { name: 'Athletic Club', city: 'Bilbao', founded: 1898 },
+                    { name: 'Real Sociedad', city: 'San Sebastián', founded: 1909 },
+                    { name: 'Real Betis', city: 'Sevilla', founded: 1907 },
+                    { name: 'Villarreal CF', city: 'Villarreal', founded: 1923 },
+                    { name: 'Valencia CF', city: 'Valencia', founded: 1919 },
+                    { name: 'Sevilla FC', city: 'Sevilla', founded: 1890 },
+                    { name: 'Celta de Vigo', city: 'Vigo', founded: 1923 },
+                    { name: 'Rayo Vallecano', city: 'Madrid', founded: 1924 },
+                    { name: 'CA Osasuna', city: 'Pamplona', founded: 1920 },
+                    { name: 'RCD Mallorca', city: 'Palma', founded: 1916 },
+                    { name: 'Getafe CF', city: 'Getafe', founded: 1946 },
+                    { name: 'Deportivo Alavés', city: 'Vitoria', founded: 1921 },
+                    { name: 'RCD Espanyol', city: 'Barcelona', founded: 1900 },
+                    { name: 'Girona FC', city: 'Girona', founded: 1930 },
+                    { name: 'UD Las Palmas', city: 'Las Palmas', founded: 1949 },
+                    { name: 'RC Celta', city: 'Vigo', founded: 1923 },
+                    { name: 'Cádiz CF', city: 'Cádiz', founded: 1910 }
+                ]
+            },
+            premier: {
+                name: 'Premier League',
+                flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
+                country: 'Inglaterra',
+                teams: [
+                    { name: 'Manchester City', city: 'Manchester', founded: 1880 },
+                    { name: 'Arsenal FC', city: 'Londres', founded: 1886 },
+                    { name: 'Liverpool FC', city: 'Liverpool', founded: 1892 },
+                    { name: 'Chelsea FC', city: 'Londres', founded: 1905 },
+                    { name: 'Manchester United', city: 'Manchester', founded: 1878 },
+                    { name: 'Newcastle United', city: 'Newcastle', founded: 1892 },
+                    { name: 'Tottenham Hotspur', city: 'Londres', founded: 1882 },
+                    { name: 'Brighton & Hove Albion', city: 'Brighton', founded: 1901 },
+                    { name: 'Aston Villa', city: 'Birmingham', founded: 1874 },
+                    { name: 'West Ham United', city: 'Londres', founded: 1895 },
+                    { name: 'Crystal Palace', city: 'Londres', founded: 1905 },
+                    { name: 'Fulham FC', city: 'Londres', founded: 1879 },
+                    { name: 'Wolverhampton Wanderers', city: 'Wolverhampton', founded: 1877 },
+                    { name: 'Everton FC', city: 'Liverpool', founded: 1878 },
+                    { name: 'Brentford FC', city: 'Londres', founded: 1889 },
+                    { name: 'Nottingham Forest', city: 'Nottingham', founded: 1865 },
+                    { name: 'Luton Town', city: 'Luton', founded: 1885 },
+                    { name: 'AFC Bournemouth', city: 'Bournemouth', founded: 1899 },
+                    { name: 'Sheffield United', city: 'Sheffield', founded: 1889 },
+                    { name: 'Burnley FC', city: 'Burnley', founded: 1882 }
+                ]
+            },
+            fpc: {
+                name: 'Liga BetPlay Colombia',
+                flag: '🇨🇴',
+                country: 'Colombia',
+                teams: [
+                    { name: 'Millonarios FC', city: 'Bogotá', founded: 1946 },
+                    { name: 'Atlético Nacional', city: 'Medellín', founded: 1947 },
+                    { name: 'América de Cali', city: 'Cali', founded: 1927 },
+                    { name: 'Independiente Santa Fe', city: 'Bogotá', founded: 1941 },
+                    { name: 'Deportes Tolima', city: 'Ibagué', founded: 1954 },
+                    { name: 'Atlético Bucaramanga', city: 'Bucaramanga', founded: 1949 },
+                    { name: 'Junior FC', city: 'Barranquilla', founded: 1924 },
+                    { name: 'Independiente Medellín', city: 'Medellín', founded: 1913 },
+                    { name: 'Once Caldas', city: 'Manizales', founded: 1947 },
+                    { name: 'La Equidad', city: 'Bogotá', founded: 1990 },
+                    { name: 'Boyacá Chicó', city: 'Tunja', founded: 2002 },
+                    { name: 'Envigado FC', city: 'Envigado', founded: 1989 },
+                    { name: 'Patriotas Boyacá', city: 'Tunja', founded: 2003 },
+                    { name: 'Unión Magdalena', city: 'Santa Marta', founded: 1950 },
+                    { name: 'Águilas Doradas', city: 'Rionegro', founded: 2008 },
+                    { name: 'Alianza FC', city: 'Valledupar', founded: 2005 },
+                    { name: 'Deportivo Cali', city: 'Cali', founded: 1912 },
+                    { name: 'Fortaleza FC', city: 'Bogotá', founded: 2009 },
+                    { name: 'Jaguares de Córdoba', city: 'Montería', founded: 1989 },
+                    { name: 'Deportivo Pereira', city: 'Pereira', founded: 1944 }
+                ]
+            }
+        };
+
+        // 🔧 Referencias a elementos DOM
+        const leagueSelect = document.getElementById('leagueSelect');
+        const teamSelect = document.getElementById('teamSelect');
+        const teamsSection = document.getElementById('teamsSection');
+        const selectedTeams = document.getElementById('selectedTeams');
+        const teamInfo = document.getElementById('teamInfo');
+        const statsPreview = document.getElementById('statsPreview');
+
+        // 📡 Event Listeners
+        leagueSelect.addEventListener('change', handleLeagueChange);
+        teamSelect.addEventListener('change', handleTeamChange);
+
+        // 🏆 Manejar cambio de liga
+        function handleLeagueChange() {
+            const selectedLeague = leagueSelect.value;
+            
+            console.log('🏆 Liga seleccionada:', selectedLeague);
+            
+            if (selectedLeague) {
+                showTeamsForLeague(selectedLeague);
+                showToast(`Liga ${leagues[selectedLeague].name} seleccionada`, 'success');
+            } else {
+                hideTeamsSection();
+            }
+        }
+
+        // ⚽ Mostrar equipos de la liga seleccionada
+        function showTeamsForLeague(leagueKey) {
+            const league = leagues[leagueKey];
+            
+            if (!league) {
+                console.error('❌ Liga no encontrada:', leagueKey);
+                return;
+            }
+
+            // Limpiar selector de equipos
+            teamSelect.innerHTML = '<option value="">-- Selecciona un equipo --</option>';
+            
+            // Agregar equipos de la liga
+            league.teams.forEach((team, index) => {
+                const option = document.createElement('option');
+                option.value = `${leagueKey}-${index}`;
+                option.textContent = `${league.flag} ${team.name}`;
+                teamSelect.appendChild(option);
+            });
+
+            // Mostrar sección de equipos
+            teamsSection.classList.add('show');
+            
+            // Ocultar información de equipo seleccionado
+            selectedTeams.classList.remove('show');
+            
+            console.log(`✅ Mostrando ${league.teams.length} equipos de ${league.name}`);
+        }
+
+        // 🙈 Ocultar sección de equipos
+        function hideTeamsSection() {
+            teamsSection.classList.remove('show');
+            selectedTeams.classList.remove('show');
+            teamSelect.innerHTML = '<option value="">-- Primero selecciona una liga --</option>';
+        }
+
+        // ⚽ Manejar cambio de equipo
+        function handleTeamChange() {
+            const selectedValue = teamSelect.value;
+            
+            if (!selectedValue) {
+                selectedTeams.classList.remove('show');
+                return;
+            }
+
+            const [leagueKey, teamIndex] = selectedValue.split('-');
+            const league = leagues[leagueKey];
+            const team = league.teams[parseInt(teamIndex)];
+            
+            console.log('⚽ Equipo seleccionado:', team.name);
+            
+            showTeamInfo(team, league);
+            showToast(`Equipo ${team.name} seleccionado`, 'success');
+        }
+
+        // 📊 Mostrar información del equipo
+        function showTeamInfo(team, league) {
+            // Información básica del equipo
+            teamInfo.innerHTML = `
+                <div class="team-info">
+                    <div class="team-flag">${league.flag}</div>
+                    <div class="team-details">
+                        <div class="team-name">${team.name}</div>
+                        <div class="league-name">${league.name} • ${team.city} • Fundado en ${team.founded}</div>
+                    </div>
+                    <button class="analyze-btn" onclick="analyzeTeam('${team.name}')">
+                        📊 Analizar
+                    </button>
+                </div>
+            `;
+
+            // Generar estadísticas simuladas
+            updateTeamStats();
+            
+            // Mostrar sección
+            selectedTeams.classList.add('show');
+        }
+
+        // 📈 Actualizar estadísticas del equipo
+        function updateTeamStats() {
+            // Generar estadísticas aleatorias realistas
+            const attackStat = Math.floor(Math.random() * 30) + 70; // 70-100
+            const defenseStat = Math.floor(Math.random() * 30) + 65; // 65-95
+            const formStat = Math.floor(Math.random() * 40) + 60;   // 60-100
+
+            // Animar cambio de estadísticas
+            animateStatChange('attackStat', attackStat);
+            animateStatChange('defenseStat', defenseStat);
+            animateStatChange('formStat', formStat);
+        }
+
+        // ✨ Animar cambio de estadística
+        function animateStatChange(elementId, newValue) {
+            const element = document.getElementById(elementId);
+            let currentValue = parseInt(element.textContent) || 0;
+            const increment = newValue > currentValue ? 1 : -1;
+            
+            const timer = setInterval(() => {
+                if (currentValue === newValue) {
+                    clearInterval(timer);
+                } else {
+                    currentValue += increment;
+                    element.textContent = currentValue;
+                }
+            }, 20);
+        }
+
+        // 🔍 Analizar equipo (función de ejemplo)
+        function analyzeTeam(teamName) {
+            showToast(`🤖 Analizando ${teamName}...`, 'info');
+            
+            setTimeout(() => {
+                showToast(`✅ Análisis de ${teamName} completado`, 'success');
+                updateTeamStats(); // Actualizar estadísticas
+            }, 2000);
+        }
+
+        // 🎉 Mostrar notificación toast
+        function showToast(message, type = 'success') {
+            // Remover toast anterior si existe
+            const existingToast = document.querySelector('.toast');
+            if (existingToast) {
+                existingToast.remove();
+            }
+
+            // Crear nuevo toast
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            const icons = {
+                success: '✅',
+                error: '❌',
+                warning: '⚠️',
+                info: 'ℹ️'
+            };
+
+            toast.innerHTML = `${icons[type]} ${message}`;
+            document.body.appendChild(toast);
+
+            // Mostrar toast
+            setTimeout(() => toast.classList.add('show'), 100);
+
+            // Ocultar después de 3 segundos
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+
+            console.log(`🎉 ${type.toUpperCase()}: ${message}`);
+        }
+
+        // 🚀 Inicialización
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🚀 Aplicación inicializada');
+            showToast('¡Aplicación lista! Selecciona una liga para comenzar', 'info');
+        });
+
+        // 📱 Manejo de errores globales
+        window.addEventListener('error', (e) => {
+            console.error('❌ Error:', e.error);
+            showToast('Ocurrió un error inesperado', 'error');
+        });
+    </script>
 </body>
 </html>
